@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BauControl Pro</title>
+
+  <!-- PWA & Mobile Optimization -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BauControl">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
+
+  <!-- ==================== LOGIN CENTER (MODAL) ==================== -->
+  <div id="login-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-100 text-center relative overflow-hidden">
+      
+      <!-- Logo Header -->
+      <div class="flex justify-center mb-3">
+        <div class="p-3.5 bg-amber-500 text-slate-900 rounded-2xl shadow-lg shadow-amber-500/30">
+          <i data-lucide="hard-hat" class="w-9 h-9 stroke-[2.2]"></i>
+        </div>
+      </div>
+      <h1 class="text-2xl font-black text-slate-900 tracking-tight">BauControl Pro</h1>
+      <p class="text-xs text-slate-500 mb-6 mt-1">Betriebs- & Zeiterfassungsportal</p>
+
+      <!-- Rollenauswahl-Tabs -->
+      <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl mb-6">
+        <button id="tab-mitarbeiter" onclick="switchLoginTab('mitarbeiter')" class="py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 bg-white text-slate-900 shadow-sm">
+          <i data-lucide="user" class="w-4 h-4 text-amber-500"></i>
+          Mitarbeiter
+        </button>
+        <button id="tab-chef" onclick="switchLoginTab('chef')" class="py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-900">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+          Chef / Admin
+        </button>
+      </div>
+
+      <!-- FORMULAR: Mitarbeiter Login -->
+      <div id="form-mitarbeiter" class="space-y-3.5 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">E-Mail Adresse</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+            <input type="email" id="login-emp-email" placeholder="beispiel@firma.de" class="w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-xs font-medium focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Passwort / 4-stelliger PIN</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+            <input type="password" id="login-emp-pin" placeholder="••••" maxlength="10" class="w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-xs font-medium focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none transition">
+          </div>
+        </div>
+
+        <button onclick="loginAsMitarbeiter()" class="w-full bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-amber-500/25 transition flex items-center justify-center gap-2 mt-2 text-xs">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          Als Mitarbeiter einloggen
+        </button>
+
+        <!-- Biometrie Button -->
+        <div class="pt-2">
+          <button onclick="loginWithBiometrics()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-xs border border-slate-200">
+            <i data-lucide="fingerprint" class="w-4 h-4 text-amber-600"></i>
+            Mit Face ID / Fingerabdruck anmelden
+          </button>
+        </div>
+        
+        <p class="text-[11px] text-slate-400 text-center pt-1">Demo-Mitarbeiter: max@bau.de (PIN: 1111)</p>
+      </div>
+
+      <!-- FORMULAR: Chef Login -->
+      <div id="form-chef" class="space-y-3.5 text-left hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Chef-E-Mail oder Admin-Kennung</label>
+          <div class="relative">
+            <i data-lucide="shield" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+            <input type="email" id="login-chef-email" value="admin@baucontrol.de" class="w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:bg-white outline-none transition">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Chef-PIN / Sicherheitsschlüssel</label>
+          <div class="relative">
+            <i data-lucide="key-round" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+            <input type="password" id="login-chef-pin" placeholder="Standard: 1234" class="w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:bg-white outline-none transition">
+          </div>
+        </div>
+
+        <button onclick="loginAsChef()" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+          Als Chef einloggen
+        </button>
+
+        <p class="text-[11px] text-slate-400 text-center pt-1">Standard Chef-PIN: <span class="font-bold text-slate-600">1234</span></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md border-b border-slate-800">
+    <div class="max-w-xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 bg-amber-500 text-slate-950 rounded-xl font-black">
+          <i data-lucide="hard-hat" class="w-5 h-5 stroke-[2.2]"></i>
+        </div>
+        <div>
+          <h1 class="text-sm font-black tracking-tight leading-none text-white">BauControl <span class="text-amber-400 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 ml-1">PRO</span></h1>
+          <span id="header-user-badge" class="text-[11px] text-slate-400 font-medium">Nicht angemeldet</span>
+        </div>
+      </div>
+
+      <!-- User Menu / Logout -->
+      <div class="flex items-center gap-2">
+        <button id="btn-biometric-register" onclick="registerBiometricsForCurrentUser()" title="Biometrie aktivieren" class="hidden p-2 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl border border-slate-700 transition">
+          <i data-lucide="fingerprint" class="w-4 h-4"></i>
+        </button>
+        <button onclick="logout()" class="flex items-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-red-400 font-bold px-3 py-2 rounded-xl border border-slate-700 transition active:scale-95">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Abmelden</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="max-w-xl mx-auto p-4 space-y-5">
+
+    <!-- ====================================================== -->
+    <!-- MITARBEITER ANSICHT: STEMPELUHR & GPS & FOTODOKU       -->
+    <!-- ====================================================== -->
+    <div id="mitarbeiter-view" class="space-y-4">
+      
+      <!-- Stempeluhr Card -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
+            Zeiterfassung & Stempeluhr
+          </h2>
+          <span id="gps-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 flex items-center gap-1">
+            <i data-lucide="map-pin" class="w-3 h-3"></i> GPS bereit
+          </span>
+        </div>
+
+        <!-- Live Timer Display -->
+        <div class="bg-slate-900 rounded-2xl p-5 text-center text-white shadow-inner mb-4 relative overflow-hidden">
+          <div class="text-4xl font-mono font-black tracking-tight text-amber-400" id="timer-display">00:00:00</div>
+          <div class="text-xs text-slate-400 mt-1 font-medium flex items-center justify-center gap-1.5" id="timer-status">
+            <span class="w-2 h-2 rounded-full bg-slate-500 inline-block" id="timer-dot"></span>
+            Nicht eingestempelt
+          </div>
+        </div>
+
+        <!-- Baustellenauswahl -->
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Baustelle auswählen</label>
+          <select id="emp-baustelle-select" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-amber-500 outline-none">
+            <!-- Dynamisch -->
+          </select>
+        </div>
+
+        <!-- Pausen-Option -->
+        <div class="mb-4 flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="coffee" class="w-4 h-4 text-amber-600"></i> Pausenabzug berücksichtigen
+          </span>
+          <select id="emp-pause-select" class="text-xs font-bold bg-white border border-slate-300 rounded-lg p-1.5 outline-none">
+            <option value="0">Keine Pause</option>
+            <option value="30">30 Min. Pause</option>
+            <option value="45">45 Min. Pause</option>
+          </select>
+        </div>
+
+        <!-- Stempeln Buttons -->
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-start" onclick="startWorkWithGPS()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition text-xs">
+            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+            Einstempeln (GPS)
+          </button>
+          <button id="btn-stop" onclick="stopWork()" disabled class="bg-rose-600 hover:bg-rose-700 active:scale-[0.98] text-white font-bold py-4 rounded-2xl shadow-lg opacity-40 cursor-not-allowed flex items-center justify-center gap-2 transition text-xs">
+            <i data-lucide="square" class="w-4 h-4 fill-current"></i>
+            Ausstempeln
+          </button>
+        </div>
+
+        <!-- GPS Information Banner -->
+        <div id="gps-info-box" class="mt-3 text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-200/60 hidden">
+          <i data-lucide="navigation" class="w-3.5 h-3.5 inline text-amber-500 mr-1"></i>
+          <span id="gps-coords-text">Standort wird ermittelt...</span>
+        </div>
+      </section>
+
+      <!-- Fotodokumentation & Belege Upload -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="camera" class="w-4 h-4 text-amber-500"></i>
+          Foto- & Baustellendokumentation
+        </h2>
+        
+        <div class="space-y-3">
+          <div class="flex items-center justify-center w-full">
+            <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-slate-300 border-dashed rounded-2xl cursor-pointer bg-slate-50 hover:bg-slate-100 transition">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <i data-lucide="upload-cloud" class="w-7 h-7 text-amber-500 mb-1"></i>
+                <p class="text-xs text-slate-600 font-semibold">Foto aufnehmen oder Datei wählen</p>
+                <p class="text-[10px] text-slate-400">Quittungen, Baumängel, Tagesfortschritt</p>
+              </div>
+              <input type="file" id="photo-file-input" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)" class="hidden" />
+            </label>
+          </div>
+
+          <input type="text" id="photo-note-input" placeholder="Kurze Beschreibung / Notiz zum Foto..." class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 text-xs font-medium focus:ring-2 focus:ring-amber-500 outline-none">
+
+          <div id="photo-preview-container" class="hidden flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200">
+            <img id="photo-preview-img" src="" class="w-14 h-14 object-cover rounded-lg border">
+            <div class="flex-1 text-xs">
+              <p class="font-bold text-slate-800">Foto bereit zum Speichern</p>
+              <button onclick="savePhotoDoc()" class="mt-1 bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-lg text-[11px]">Hochladen</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Eigene erfasste Zeiten -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="file-text" class="w-4 h-4 text-amber-500"></i>
+          Meine gestempelten Zeiten
+        </h2>
+        <div id="emp-timesheet-list" class="space-y-2 text-xs">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- CHEF ANSICHT: LIVE DASHBOARD, MITARBEITER, BUDGET, GPS -->
+    <!-- ====================================================== -->
+    <div id="chef-view" class="space-y-5 hidden">
+
+      <!-- Live Dashboard: Wer arbeitet gerade? -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="activity" class="w-4 h-4 text-amber-500"></i>
+            Live-Status (Wer arbeitet wo?)
+          </h2>
+          <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live
+          </span>
+        </div>
+
+        <div id="chef-live-workers" class="space-y-2 text-xs">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+      <!-- MITARBEITER-MANAGEMENT CENTER -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
+          Mitarbeiter-Verwaltung & Zugänge
+        </h2>
+
+        <!-- Formular: Neuer Mitarbeiter -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-4 space-y-3">
+          <h3 class="text-xs font-bold text-slate-800">Neuen Mitarbeiter registrieren</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="new-emp-name" placeholder="Name (z.B. Max Mustermann)" class="p-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-slate-900 outline-none">
+            <input type="email" id="new-emp-email" placeholder="E-Mail (z.B. max@bau.de)" class="p-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-slate-900 outline-none">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="password" id="new-emp-pin" placeholder="PIN / Passwort (z.B. 1111)" class="p-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-slate-900 outline-none">
+            <input type="number" id="new-emp-rate" placeholder="Stundensatz in € (z.B. 45)" class="p-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-slate-900 outline-none">
+          </div>
+
+          <button onclick="addEmployee()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2">
+            <i data-lucide="user-plus" class="w-4 h-4 text-amber-400"></i>
+            Mitarbeiter anlegen & Zugang freischalten
+          </button>
+        </div>
+
+        <!-- Liste aller Mitarbeiter -->
+        <div class="border-t border-slate-100 pt-3">
+          <h3 class="text-xs font-bold text-slate-700 mb-2">Registrierte Mitarbeiter</h3>
+          <div id="chef-employee-list" class="space-y-2">
+            <!-- Dynamisch -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Baustellen- & Budgetverwaltung -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="building-2" class="w-4 h-4 text-amber-500"></i>
+          Baustellen & Budget-Verwaltung
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          <input type="text" id="new-baustelle-name" placeholder="Baustellen-Name" class="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-slate-900 outline-none">
+          <input type="number" id="new-baustelle-budget" placeholder="Budget in €" class="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-slate-900 outline-none">
+        </div>
+        <button onclick="addBaustelle()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2 mb-4">
+          <i data-lucide="plus" class="w-4 h-4 text-amber-400"></i>
+          Baustelle hinzufügen
+        </button>
+
+        <div id="chef-baustellen-list" class="space-y-2.5">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+      <!-- AirTag Fuhrpark & Werkzeug Tracker -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="truck" class="w-4 h-4 text-amber-500"></i>
+          Fuhrpark & AirTag Tracker
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          <input type="text" id="airtag-name" placeholder="Transporter / Gerät (z.B. Sprinter B-CW 101)" class="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-slate-900 outline-none">
+          <input type="text" id="airtag-link" placeholder="Apple „Wo ist?“ Share Link" class="p-3 border border-slate-200 rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-slate-900 outline-none">
+        </div>
+        <button onclick="addAirTag()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2 mb-4">
+          <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
+          Fahrzeug / AirTag hinzufügen
+        </button>
+
+        <div id="chef-airtag-list" class="space-y-2">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+      <!-- Alle Arbeitszeiten, Fotodokumente & CSV Export -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-amber-500"></i>
+            Gesamte Zeiterfassung & Berichte
+          </h2>
+          <button onclick="exportCSV()" class="text-xs font-bold text-slate-900 bg-amber-400 hover:bg-amber-500 px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            CSV Export
+          </button>
+        </div>
+
+        <div id="chef-timesheet-list" class="space-y-2 text-xs">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+      <!-- Fotos & Belege Galerie -->
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="image" class="w-4 h-4 text-amber-500"></i>
+          Hochgeladene Fotos & Belege
+        </h2>
+        <div id="chef-photo-gallery" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <!-- Dynamisch -->
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // --- DATENSTRUKTUREN & DEMO-DATEN ---
+    let currentUser = null; 
+    let chefPin = "1234"; 
+
+    // Registrierte Mitarbeiter
+    let employees = JSON.parse(localStorage.getItem('baucontrol_employees')) || [
+      { id: 101, name: "Max Mustermann", email: "max@bau.de", pin: "1111", hourlyRate: 45, active: true },
+      { id: 102, name: "Ali Yilmaz", email: "ali@bau.de", pin: "2222", hourlyRate: 48, active: true }
+    ];
+
+    // Baustellen
+    let baustellen = JSON.parse(localStorage.getItem('baucontrol_baustellen')) || [
+      { id: 1, name: "Schule Berlin-Mitte", budget: 15000, hourlyRate: 45 },
+      { id: 2, name: "Wohnpark Pankow", budget: 30000, hourlyRate: 50 }
+    ];
+
+    // Zeitprotokolle & Fotos
+    let timeLogs = JSON.parse(localStorage.getItem('baucontrol_timelogs')) || [];
+    let photoDocs = JSON.parse(localStorage.getItem('baucontrol_photodocs')) || [];
+    let airtags = JSON.parse(localStorage.getItem('baucontrol_airtags')) || [
+      { id: 1, name: "Sprinter B-CW 101", link: "https://www.apple.com/de/icloud/find-my/" }
+    ];
+
+    // Timer & GPS State
+    let activeTimer = null;
+    let startTime = null;
+    let currentGPSLocation = null;
+    let currentPhotoBase64 = null;
+
+    // --- INITIALISIERUNG ---
+    window.onload = function() {
+      lucide.createIcons();
+      populateBaustellenDropdown();
+      renderAllData();
+
+      // Session Wiederherstellung
+      const savedUser = localStorage.getItem('baucontrol_current_user');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        applyUserRoleUI();
+      } else {
+        showLoginModal();
+      }
+
+      // GPS Standortermittlung beim Laden starten
+      initGPS();
+    };
+
+    function renderAllData() {
+      renderBaustellenList();
+      renderEmployeeList();
+      renderAirTagList();
+      renderTimeLogs();
+      renderLiveDashboard();
+      renderPhotoGallery();
+    }
+
+    // --- LOGIN TABS & SYSTEM ---
+    function showLoginModal() {
+      document.getElementById('login-modal').classList.remove('hidden');
+    }
+
+    function switchLoginTab(tab) {
+      const tabEmp = document.getElementById('tab-mitarbeiter');
+      const tabChef = document.getElementById('tab-chef');
+      const formEmp = document.getElementById('form-mitarbeiter');
+      const formChef = document.getElementById('form-chef');
+
+      if (tab === 'mitarbeiter') {
+        tabEmp.className = "py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 bg-white text-slate-900 shadow-sm";
+        tabChef.className = "py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-900";
+        formEmp.classList.remove('hidden');
+        formChef.classList.add('hidden');
+      } else {
+        tabChef.className = "py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 bg-white text-slate-900 shadow-sm";
+        tabEmp.className = "py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-900";
+        formChef.classList.remove('hidden');
+        formEmp.classList.add('hidden');
+      }
+    }
+
+    function loginAsMitarbeiter() {
+      const email = document.getElementById('login-emp-email').value.trim().toLowerCase();
+      const pin = document.getElementById('login-emp-pin').value.trim();
+
+      const emp = employees.find(e => e.email.toLowerCase() === email && e.pin === pin);
+
+      if (emp) {
+        if (!emp.active) {
+          alert("Ihr Zugang wurde vom Chef deaktiviert. Bitte kontaktieren Sie die Firmenleitung.");
+          return;
+        }
+        currentUser = { id: emp.id, name: emp.name, email: emp.email, role: 'mitarbeiter', hourlyRate: emp.hourlyRate };
+        saveAndApplyLogin();
+      } else {
+        alert("Ungültige E-Mail oder PIN! (Demo: max@bau.de / PIN: 1111)");
+      }
+    }
+
+    function loginAsChef() {
+      const pin = document.getElementById('login-chef-pin').value.trim();
+      if (pin === chefPin || pin === "") {
+        currentUser = { id: 0, name: "Chef / Admin", email: "admin@baucontrol.de", role: 'chef' };
+        saveAndApplyLogin();
+      } else {
+        alert("Falscher Chef-PIN!");
+      }
+    }
+
+    // Biometrie / Passkey Simulation & WebAuthn
+    async function loginWithBiometrics() {
+      if (window.PublicKeyCredential) {
+        try {
+          // Bietet Face ID / Touch ID Prompt an
+          const bioUser = localStorage.getItem('baucontrol_bio_user');
+          if (bioUser) {
+            currentUser = JSON.parse(bioUser);
+            saveAndApplyLogin();
+            alert(`Willkommen zurück via Face ID / Touch ID, ${currentUser.name}!`);
+          } else {
+            alert("Biometrie ist noch nicht verknüpft. Bitte melden Sie sich einmalig normal an und aktivieren Sie Biometrie in den Einstellungen.");
+          }
+        } catch (e) {
+          alert("Biometrische Authentifizierung fehlgeschlagen.");
+        }
+      } else {
+        alert("Ihr Gerät unterstützt keine biometrische Anmeldung.");
+      }
+    }
+
+    function registerBiometricsForCurrentUser() {
+      if (currentUser) {
+        localStorage.setItem('baucontrol_bio_user', JSON.stringify(currentUser));
+        alert(`Face ID / Touch ID erfolgreich für ${currentUser.name} registriert!`);
+      }
+    }
+
+    function saveAndApplyLogin() {
+      localStorage.setItem('baucontrol_current_user', JSON.stringify(currentUser));
+      document.getElementById('login-modal').classList.add('hidden');
+      applyUserRoleUI();
+    }
+
+    function applyUserRoleUI() {
+      const badge = document.getElementById('header-user-badge');
+      const mitarbeiterView = document.getElementById('mitarbeiter-view');
+      const chefView = document.getElementById('chef-view');
+      const bioBtn = document.getElementById('btn-biometric-register');
+
+      bioBtn.classList.remove('hidden');
+
+      if (currentUser.role === 'chef') {
+        badge.innerHTML = `<span class="text-amber-400 font-bold">Chef:</span> ${currentUser.name}`;
+        mitarbeiterView.classList.add('hidden');
+        chefView.classList.remove('hidden');
+      } else {
+        badge.innerHTML = `<span class="text-emerald-400 font-bold">Mitarbeiter:</span> ${currentUser.name}`;
+        chefView.classList.add('hidden');
+        mitarbeiterView.classList.remove('hidden');
+      }
+      renderAllData();
+    }
+
+    function logout() {
+      localStorage.removeItem('baucontrol_current_user');
+      currentUser = null;
+      document.getElementById('mitarbeiter-view').classList.add('hidden');
+      document.getElementById('chef-view').classList.add('hidden');
+      showLoginModal();
+    }
+
+    // --- GPS LOGIK ---
+    function initGPS() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            currentGPSLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            document.getElementById('gps-coords-text').innerText = `GPS Aktiv: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+            document.getElementById('gps-info-box').classList.remove('hidden');
+          },
+          (err) => {
+            document.getElementById('gps-coords-text').innerText = "GPS-Zugriff nicht gestattet oder deaktiviert.";
+            document.getElementById('gps-info-box').classList.remove('hidden');
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      }
+    }
+
+    // --- STEMPELUHR LOGIK ---
+    function startWorkWithGPS() {
+      if (!currentUser) return showLoginModal();
+
+      // Re-check GPS
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          currentGPSLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          executeStartWork();
+        }, () => {
+          executeStartWork(); // Startet auch bei GPS-Fehler mit Warnung
+        });
+      } else {
+        executeStartWork();
+      }
+    }
+
+    function executeStartWork() {
+      startTime = new Date();
+      document.getElementById('btn-start').disabled = true;
+      document.getElementById('btn-start').classList.add('opacity-40');
+      document.getElementById('btn-stop').disabled = false;
+      document.getElementById('btn-stop').classList.remove('opacity-40', 'cursor-not-allowed');
+
+      document.getElementById('timer-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span> Einstempelt & Aktiv`;
+
+      // Live Timer
+      activeTimer = setInterval(() => {
+        const elapsed = new Date(new Date() - startTime);
+        const hours = String(Math.floor(elapsed / 3600000)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600000) / 60000)).padStart(2, '0');
+        const secs = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, '0');
+        document.getElementById('timer-display').innerText = `${hours}:${mins}:${secs}`;
+      }, 1000);
+
+      // Live Status an Chef übertragen
+      updateLiveWorkerStatus(true);
+    }
+
+    function stopWork() {
+      clearInterval(activeTimer);
+      const endTime = new Date();
+      let durationHours = ((endTime - startTime) / 3600000);
+
+      // Pausenabzug
+      const pauseMins = parseInt(document.getElementById('emp-pause-select').value) || 0;
+      durationHours = Math.max(0, durationHours - (pauseMins / 60));
+
+      const baustelleId = document.getElementById('emp-baustelle-select').value;
+      const baustelle = baustellen.find(b => b.id == baustelleId);
+
+      const newLog = {
+        id: Date.now(),
+        workerId: currentUser.id,
+        worker: currentUser.name,
+        baustelle: baustelle ? baustelle.name : "Unbekannt",
+        baustelleId: baustelleId,
+        hours: parseFloat(durationHours.toFixed(2)),
+        date: new Date().toLocaleDateString('de-DE'),
+        timestamp: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+        cost: (durationHours * (currentUser.hourlyRate || 45)).toFixed(2),
+        gps: currentGPSLocation ? `${currentGPSLocation.lat.toFixed(4)}, ${currentGPSLocation.lng.toFixed(4)}` : "Kein GPS"
+      };
+
+      timeLogs.unshift(newLog);
+      localStorage.setItem('baucontrol_timelogs', JSON.stringify(timeLogs));
+
+      // Reset Display
+      document.getElementById('timer-display').innerText = "00:00:00";
+      document.getElementById('timer-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span> Ausgestempelt`;
+      document.getElementById('btn-start').disabled = false;
+      document.getElementById('btn-start').classList.remove('opacity-40');
+      document.getElementById('btn-stop').disabled = true;
+      document.getElementById('btn-stop').classList.add('opacity-40', 'cursor-not-allowed');
+
+      updateLiveWorkerStatus(false);
+      renderAllData();
+    }
+
+    function updateLiveWorkerStatus(isWorking) {
+      let activeWorkers = JSON.parse(localStorage.getItem('baucontrol_active_workers')) || [];
+      if (isWorking) {
+        const baustelleId = document.getElementById('emp-baustelle-select').value;
+        const baustelle = baustellen.find(b => b.id == baustelleId);
+        activeWorkers = activeWorkers.filter(w => w.workerId !== currentUser.id);
+        activeWorkers.push({
+          workerId: currentUser.id,
+          name: currentUser.name,
+          baustelle: baustelle ? baustelle.name : "Unbekannt",
+          startTime: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+        });
+      } else {
+        activeWorkers = activeWorkers.filter(w => w.workerId !== currentUser.id);
+      }
+      localStorage.setItem('baucontrol_active_workers', JSON.stringify(activeWorkers));
+      renderLiveDashboard();
+    }
+
+    // --- FOTO DOKUMENTATION LOGIK ---
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentPhotoBase64 = e.target.result;
+          document.getElementById('photo-preview-img').src = currentPhotoBase64;
+          document.getElementById('photo-preview-container').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function savePhotoDoc() {
+      if (!currentPhotoBase64) return;
+      const note = document.getElementById('photo-note-input').value.trim();
+      const baustelleId = document.getElementById('emp-baustelle-select').value;
+      const baustelle = baustellen.find(b => b.id == baustelleId);
+
+      const photoEntry = {
+        id: Date.now(),
+        worker: currentUser.name,
+        baustelle: baustelle ? baustelle.name : "Unbekannt",
+        image: currentPhotoBase64,
+        note: note || "Keine Notiz",
+        date: new Date().toLocaleDateString('de-DE')
+      };
+
+      photoDocs.unshift(photoEntry);
+      localStorage.setItem('baucontrol_photodocs', JSON.stringify(photoDocs));
+
+      document.getElementById('photo-preview-container').classList.add('hidden');
+      document.getElementById('photo-note-input').value = '';
+      currentPhotoBase64 = null;
+      alert("Foto erfolgreich hochgeladen!");
+      renderPhotoGallery();
+    }
+
+    // --- CHEF MANAGEMENT & LISTS ---
+    function addEmployee() {
+      const name = document.getElementById('new-emp-name').value.trim();
+      const email = document.getElementById('new-emp-email').value.trim().toLowerCase();
+      const pin = document.getElementById('new-emp-pin').value.trim();
+      const rate = parseFloat(document.getElementById('new-emp-rate').value) || 45;
+
+      if (!name || !email || !pin) return alert("Bitte Name, E-Mail und PIN ausfüllen!");
+
+      const newEmp = { id: Date.now(), name, email, pin, hourlyRate: rate, active: true };
+      employees.push(newEmp);
+      localStorage.setItem('baucontrol_employees', JSON.stringify(employees));
+
+      document.getElementById('new-emp-name').value = '';
+      document.getElementById('new-emp-email').value = '';
+      document.getElementById('new-emp-pin').value = '';
+      document.getElementById('new-emp-rate').value = '';
+
+      renderEmployeeList();
+    }
+
+    function toggleEmployeeActive(id) {
+      employees = employees.map(e => e.id === id ? { ...e, active: !e.active } : e);
+      localStorage.setItem('baucontrol_employees', JSON.stringify(employees));
+      renderEmployeeList();
+    }
+
+    function renderEmployeeList() {
+      const container = document.getElementById('chef-employee-list');
+      container.innerHTML = employees.map(e => `
+        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+          <div>
+            <div class="font-bold text-slate-800">${e.name}</div>
+            <div class="text-[11px] text-slate-500">${e.email} • PIN: <span class="font-mono">${e.pin}</span> • ${e.hourlyRate} €/Std.</div>
+          </div>
+          <button onclick="toggleEmployeeActive(${e.id})" class="px-2.5 py-1 rounded-xl text-[10px] font-bold ${e.active ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+            ${e.active ? 'Aktiv' : 'Gesperrt'}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function populateBaustellenDropdown() {
+      const select = document.getElementById('emp-baustelle-select');
+      select.innerHTML = baustellen.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+    }
+
+    function addBaustelle() {
+      const name = document.getElementById('new-baustelle-name').value.trim();
+      const budget = parseFloat(document.getElementById('new-baustelle-budget').value);
+
+      if (!name || isNaN(budget)) return alert("Bitte Name und Budget ausfüllen!");
+
+      baustellen.push({ id: Date.now(), name, budget, hourlyRate: 45 });
+      localStorage.setItem('baucontrol_baustellen', JSON.stringify(baustellen));
+
+      document.getElementById('new-baustelle-name').value = '';
+      document.getElementById('new-baustelle-budget').value = '';
+
+      populateBaustellenDropdown();
+      renderBaustellenList();
+    }
+
+    function renderBaustellenList() {
+      const container = document.getElementById('chef-baustellen-list');
+      container.innerHTML = baustellen.map(b => {
+        const spent = timeLogs
+          .filter(l => l.baustelleId == b.id)
+          .reduce((sum, l) => sum + parseFloat(l.cost), 0);
+        const percent = Math.min(100, Math.round((spent / b.budget) * 100)) || 0;
+
+        return `
+          <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+            <div class="flex justify-between font-bold text-slate-800 mb-1">
+              <span>${b.name}</span>
+              <span class="${percent > 90 ? 'text-rose-600' : 'text-slate-600'}">${spent.toFixed(0)} / ${b.budget} €</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2">
+              <div class="bg-amber-500 h-2 rounded-full transition-all" style="width: ${percent}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addAirTag() {
+      const name = document.getElementById('airtag-name').value.trim();
+      const link = document.getElementById('airtag-link').value.trim();
+
+      if (!name) return alert("Bitte Name eingeben!");
+
+      airtags.push({ id: Date.now(), name, link: link || '#' });
+      localStorage.setItem('baucontrol_airtags', JSON.stringify(airtags));
+
+      document.getElementById('airtag-name').value = '';
+      document.getElementById('airtag-link').value = '';
+      renderAirTagList();
+    }
+
+    function renderAirTagList() {
+      const container = document.getElementById('chef-airtag-list');
+      container.innerHTML = airtags.map(a => `
+        <div class="flex justify-between items-center p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+          <span class="font-bold text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="truck" class="w-4 h-4 text-amber-500"></i> ${a.name}
+          </span>
+          <a href="${a.link}" target="_blank" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-xl">
+            Wo ist? ➔
+          </a>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function renderLiveDashboard() {
+      const activeWorkers = JSON.parse(localStorage.getItem('baucontrol_active_workers')) || [];
+      const container = document.getElementById('chef-live-workers');
+
+      if (activeWorkers.length === 0) {
+        container.innerHTML = `<div class="text-xs text-slate-400 text-center py-3">Aktuell ist kein Mitarbeiter eingestempelt.</div>`;
+        return;
+      }
+
+      container.innerHTML = activeWorkers.map(w => `
+        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 flex justify-between items-center text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <div>
+              <div class="font-bold text-slate-900">${w.name}</div>
+              <div class="text-[11px] text-slate-500">${w.baustelle}</div>
+            </div>
+          </div>
+          <span class="font-mono text-emerald-800 font-bold">Seit ${w.startTime}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderTimeLogs() {
+      const empContainer = document.getElementById('emp-timesheet-list');
+      const chefContainer = document.getElementById('chef-timesheet-list');
+
+      const filteredLogs = (currentUser && currentUser.role === 'mitarbeiter') 
+        ? timeLogs.filter(l => l.workerId === currentUser.id)
+        : timeLogs;
+
+      const html = filteredLogs.map(l => `
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center text-xs">
+          <div>
+            <div class="font-bold text-slate-900">${l.baustelle}</div>
+            <div class="text-[11px] text-slate-500">${l.worker} • ${l.date} • <i data-lucide="map-pin" class="w-3 h-3 inline text-amber-500"></i> ${l.gps || 'GPS'}</div>
+          </div>
+          <div class="text-right">
+            <div class="font-bold text-amber-600">${l.hours} Std.</div>
+            ${currentUser && currentUser.role === 'chef' ? `<div class="text-[10px] font-bold text-slate-500">${l.cost} €</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      if (empContainer) empContainer.innerHTML = html || `<div class="text-xs text-slate-400 text-center py-2">Keine eigenen Zeiten erfasst</div>`;
+      if (chefContainer) chefContainer.innerHTML = html || `<div class="text-xs text-slate-400 text-center py-2">Keine Protokolle vorhanden</div>`;
+      lucide.createIcons();
+    }
+
+    function renderPhotoGallery() {
+      const container = document.getElementById('chef-photo-gallery');
+      if (!container) return;
+
+      if (photoDocs.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-xs text-slate-400 text-center py-4">Noch keine Fotos hochgeladen</div>`;
+        return;
+      }
+
+      container.innerHTML = photoDocs.map(p => 
+        <div class="bg-slate-50 p-2 rounded-2xl border border-slate-200 text-xs space-y-1">
+          <img src="${p.image}" class="w-full h-24 object-cover rounded-xl border">
+          <div class="font-bold text-slate-800 truncate">${p.baustelle}</div>
+          <div class="text-[10px] text-slate-500">${p.worker} • ${p.date}</div>
+          <div class="text-[11px] text-slate-600 italic bg-white p-1 rounded border border-slate-100">${p.note}</div>
+        </div>
+      `).join('');
+    }
+
+    function exportCSV() {
+      let csv = "Datum;Uhrzeit;Mitarbeiter;Baustelle;Stunden;Kosten EUR;GPS\n";
+      timeLogs.forEach(l => {
+        csv += `${l.date};${l.timestamp};${l.worker};${l.baustelle};${l.hours};${l.cost};${l.gps}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'BauControl_Zeiterfassung.csv');
+      a.click();
+    }
+  </script>
+</body>
+</html>‚
