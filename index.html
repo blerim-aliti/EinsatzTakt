@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>EinsatzTakt Pro – Zeiterfassung & Einsatzmanagement für Unternehmen</title>
+  <title>EinsatzTakt Pro – Zeiterfassung & Einsatzmanagement</title>
 
-  <!-- PWA Metadata -->
+  <!-- PWA & Favicon -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,11 +23,6 @@
       -webkit-tap-highlight-color: transparent;
     }
     
-    .bg-grid-pattern {
-      background-image: radial-gradient(rgba(220, 38, 38, 0.12) 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-
     /* Print Optimization */
     @media print {
       body { background: white !important; color: black !important; padding: 0 !important; }
@@ -40,17 +35,14 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-red-500 selection:text-white">
 
-  <!-- DYNAMISCHER BACKGROUND CANVAS -->
-  <canvas id="hero-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
-
   <!-- ==================== NAVIGATION ==================== -->
-  <header class="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm no-print">
+  <header class="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Logo -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-11 h-11 bg-red-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
-          <i data-lucide="clock-4" class="w-6 h-6 stroke-[2.5]"></i>
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-red-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-red-600/30">
+          <i data-lucide="clock" class="w-6 h-6 stroke-[2.5]"></i>
         </div>
         <div>
           <span class="text-xl font-black tracking-tight text-slate-900 block leading-none">Einsatz<span class="text-red-600">Takt</span></span>
@@ -62,7 +54,6 @@
       <nav class="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-600">
         <a href="#vorteile" class="hover:text-red-600 transition">Vorteile</a>
         <a href="#branchen" class="hover:text-red-600 transition">Branchen</a>
-        <a href="#funktionen" class="hover:text-red-600 transition">Funktionen</a>
         <a href="#kontakt" class="hover:text-red-600 transition">Kontakt</a>
       </nav>
 
@@ -82,15 +73,659 @@
   </header>
 
   <!-- ==================== HERO SECTION ==================== -->
-  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-grid-pattern">
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
       
       <!-- Badge -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-bold mb-6 animate-pulse">
-        <span class="w-2 h-2 rounded-full bg-red-600"></span>
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-bold mb-6">
+        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
         Multi-Tenant Plattform für Handwerk, Bau, Sanierung & Pflege
       </div>
 
       <!-- Headline -->
-      <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight max-w-4xl mx-auto leading-[1.15]">
-        Perfekter Takt für Ihre <span class="text-red-600 underline decoration-red-200 decoration-w
+      <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight">
+        Perfekter Takt für Ihre <span class="text-red-600">Arbeitszeiten</span> & Einsätze
+      </h1>
+
+      <p class="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-medium">
+        Die universelle Komplettlösung für branchenübergreifende Zeiterfassung, Live-Mitarbeiterstatus, Budgetkontrolle und Fuhrpark-Tracking.
+      </p>
+
+      <!-- CTA Buttons Center -->
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+        <button onclick="openLoginModal('register')" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2">
+          <i data-lucide="building-2" class="w-5 h-5"></i>
+          Eigene Firma kostenlos anlegen
+        </button>
+        <button onclick="openLoginModal('mitarbeiter')" class="w-full sm:w-auto px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition flex items-center justify-center gap-2">
+          <i data-lucide="smartphone" class="w-5 h-5 text-red-600"></i>
+          Mitarbeiter Login
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto pt-10 border-t border-slate-100">
+        <div>
+          <div class="text-2xl font-black text-slate-900">100%</div>
+          <div class="text-xs font-semibold text-slate-500">Strikte Datentrennung</div>
+        </div>
+        <div>
+          <div class="text-2xl font-black text-slate-900">GPS & Geofence</div>
+          <div class="text-xs font-semibold text-slate-500">Präzise Standorte</div>
+        </div>
+        <div>
+          <div class="text-2xl font-black text-slate-900">PDF & CSV</div>
+          <div class="text-xs font-semibold text-slate-500">Druckreife Berichte</div>
+        </div>
+        <div>
+          <div class="text-2xl font-black text-slate-900">0 € Startkosten</div>
+          <div class="text-xs font-semibold text-slate-500">Sofort startklar</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== BRANCHEN OVERVIEW ==================== -->
+  <section id="branchen" class="py-20 bg-slate-50 border-y border-slate-100 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Universell Einsetzbar</h2>
+        <p class="text-3xl font-black text-slate-900 tracking-tight">Maßgeschneidert für Ihre Branche</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm">
+          <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="hammer" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Bau, Handwerk & Elektro</h3>
+          <p class="text-sm text-slate-600">Projektbasierte Zeiterfassung, Werkzeug-Verfolgung via AirTags und automatischer Soll/Ist-Budgetabgleich.</p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm">
+          <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="sparkles" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Sanierung & Gebäudereinigung</h3>
+          <p class="text-sm text-slate-600">Objektbezogene Erfassung der Arbeitszeiten vor Ort, Stundennachweise per PDF-Druck für Kunden.</p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm">
+          <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Pflege, Logistik & Dienstleistung</h3>
+          <p class="text-sm text-slate-600">Einfaches Einstempeln für Außendienst und Pflegekräfte mit individuellen Mitarbeiter-PINs.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== KONTAKTFORMULAR ==================== -->
+  <section id="kontakt" class="py-20 bg-white no-print">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      
+      <div class="bg-slate-50 rounded-3xl p-8 sm:p-12 border border-slate-200/60">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Fragen oder individuelle Betreuung?</h2>
+          <p class="text-sm text-slate-500 mt-2">Senden Sie uns eine Nachricht. Unser Team unterstützt Sie beim Setup Ihrer Firma.</p>
+        </div>
+
+        <form onsubmit="submitContact(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ihr Name</label>
+              <input type="text" required placeholder="Vor- und Nachname" class="w-full p-3.5 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-red-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmenname</label>
+              <input type="text" required placeholder="z.B. Bau-GmbH Berlin" class="w-full p-3.5 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-red-500 outline-none">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">E-Mail-Adresse</label>
+            <input type="email" required placeholder="name@firma.de" class="w-full p-3.5 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-red-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nachricht</label>
+            <textarea rows="4" required placeholder="Wie können wir Ihnen helfen?" class="w-full p-3.5 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/20 transition">
+            Nachricht absenden
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MODAL: MULTI-TENANT LOGIN & REGISTRIERUNG ==================== -->
+  <div id="login-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-100 relative">
+      
+      <!-- Close Button -->
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
+          <i data-lucide="clock" class="w-6 h-6"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-900">EinsatzTakt Pro</h2>
+        <p class="text-xs text-slate-500">Wählen Sie Ihren Zugangstyp</p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-2xl mb-6 text-xs font-bold">
+        <button id="tab-btn-mitarbeiter" onclick="switchTab('mitarbeiter')" class="py-2.5 rounded-xl transition text-slate-600">Mitarbeiter</button>
+        <button id="tab-btn-chef" onclick="switchTab('chef')" class="py-2.5 rounded-xl transition text-slate-600">Chef Login</button>
+        <button id="tab-btn-register" onclick="switchTab('register')" class="py-2.5 rounded-xl transition text-slate-600">Firma neu</button>
+      </div>
+
+      <!-- FORM 1: MITARBEITER LOGIN -->
+      <form id="form-mitarbeiter-login" onsubmit="handleMitarbeiterLogin(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Eindeutiger Firmen-Code</label>
+          <input type="text" id="login-firmencode" required placeholder="z.B. ET-8492" class="w-full p-3 border rounded-xl bg-slate-50 text-sm uppercase font-mono tracking-wider font-bold focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ihre E-Mail</label>
+          <input type="email" id="login-worker-email" required placeholder="mitarbeiter@firma.de" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mitarbeiter-PIN</label>
+          <input type="password" id="login-worker-pin" required placeholder="4-stellige PIN" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          Einloggen & Stempeluhr öffnen
+        </button>
+      </form>
+
+      <!-- FORM 2: CHEF LOGIN -->
+      <form id="form-chef-login" onsubmit="handleChefLogin(event)" class="space-y-3 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmen-E-Mail</label>
+          <input type="email" id="login-chef-email" required placeholder="chef@firma.de" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Passwort / Chef-PIN</label>
+          <input type="password" id="login-chef-pin" required placeholder="Ihr Chef-Passwort" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          In Chef-Zentrale einloggen
+        </button>
+      </form>
+
+      <!-- FORM 3: FIRMA NEU REGISTRIEREN -->
+      <form id="form-register-company" onsubmit="handleCompanyRegistration(event)" class="space-y-3 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmenname</label>
+          <input type="text" id="reg-company-name" required placeholder="z.B. Elektrotechnik Meier" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Inhaber E-Mail</label>
+          <input type="email" id="reg-chef-email" required placeholder="inhaber@firma.de" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Passwort festlegen</label>
+          <input type="password" id="reg-chef-password" required placeholder="Sicheres Passwort" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          Firma erstellen & Code generieren
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== DASHBOARD / APP AREA (Sichtbar nach Login) ==================== -->
+  <div id="app-dashboard" class="fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto hidden text-slate-800">
+    
+    <!-- Dashboard Header -->
+    <header class="bg-slate-950 text-white p-4 border-b border-slate-800 sticky top-0 z-40">
+      <div class="max-w-2xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-red-600 text-white rounded-xl">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 id="dash-company-name" class="font-black text-base text-white leading-none">Firma</h2>
+            <div class="flex items-center gap-2 mt-1">
+              <span id="dash-user-badge" class="text-[10px] font-bold text-red-400">Rolle</span>
+              <span id="dash-firmcode-badge" class="text-[10px] bg-slate-800 text-slate-300 font-mono px-2 py-0.5 rounded border border-slate-700">Code: ---</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="logoutApp()" class="text-xs bg-slate-900 hover:bg-slate-800 text-red-400 border border-slate-800 font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          Beenden
+        </button>
+      </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto p-4 space-y-4 pb-20">
+
+      <!-- MITARBEITER STEMPELUHR -->
+      <section id="dash-mitarbeiter-view" class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100 hidden">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <i data-lucide="play-circle" class="w-4 h-4 text-red-600"></i>
+          Digitale Stempeluhr
+        </h3>
+
+        <div class="bg-slate-950 rounded-2xl p-5 mb-4 text-center text-white border border-slate-800">
+          <div id="dash-timer" class="text-4xl font-mono font-black text-red-500">00:00:00</div>
+          <div id="dash-timer-status" class="text-xs text-slate-400 mt-1">Bereit zum Stempeln</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-slate-600 mb-1">Einsatzort / Projekt wählen</label>
+          <select id="dash-project-select" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-semibold focus:ring-2 focus:ring-red-500 outline-none">
+            <!-- Dynamisch -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-clock-in" onclick="clockIn()" class="py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+            <i data-lucide="play" class="w-4 h-4"></i> Einstempeln
+          </button>
+          <button id="btn-clock-out" onclick="clockOut()" disabled class="py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition">
+            <i data-lucide="square" class="w-4 h-4"></i> Ausstempeln
+          </button>
+        </div>
+      </section>
+
+      <!-- CHEF VERWALTUNGS-PANEL -->
+      <div id="dash-chef-view" class="space-y-4 hidden">
+        
+        <!-- Live Status der Firma -->
+        <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+            Mitarbeiter dieser Firma
+          </h3>
+          <div id="dash-worker-list" class="space-y-2 text-xs"></div>
+          
+          <div class="mt-4 pt-4 border-t space-y-2">
+            <h4 class="text-xs font-bold text-slate-700">Neuen Mitarbeiter anlegen</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <input type="text" id="add-worker-name" placeholder="Name" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
+              <input type="email" id="add-worker-email" placeholder="E-Mail" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
+              <input type="text" id="add-worker-pin" placeholder="PIN (z.B. 1234)" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
+            </div>
+            <button onclick="addWorkerToCompany()" class="w-full py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition">
+              + Mitarbeiter zur Firma hinzufügen
+            </button>
+          </div>
+        </section>
+
+        <!-- Projekte & Budgets der Firma -->
+        <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <i data-lucide="folder-plus" class="w-4 h-4 text-red-600"></i>
+            Projekte & Kunden-Budgets
+          </h3>
+          <div id="dash-project-list" class="space-y-2 text-xs mb-4"></div>
+
+          <div class="space-y-2">
+            <input type="text" id="add-proj-name" placeholder="Projektname (z.B. Baustelle Nord)" class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs">
+            <input type="number" id="add-proj-budget" placeholder="Budget in €" class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs">
+            <button onclick="addProjectToCompany()" class="w-full py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition">
+              + Projekt anlegen
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ZEITPROTOKOLL & DRUCK-SECTION (PRINT) -->
+      <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100 print-area">
+        <div class="hidden print-header">
+          <h1 class="text-2xl font-black">EinsatzTakt Pro – Arbeitszeitprotokoll</h1>
+          <p id="print-company-info" class="text-sm text-slate-600"></p>
+        </div>
+
+        <div class="flex justify-between items-center mb-3 no-print">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i>
+            Erfasste Stunden
+          </h3>
+          <div class="flex gap-2">
+            <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-lg flex items-center gap-1">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i> Drucken / PDF
+            </button>
+            <button onclick="exportCompanyCSV()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-lg flex items-center gap-1">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> CSV
+            </button>
+          </div>
+        </div>
+
+        <div id="dash-logs-list" class="space-y-2 text-xs"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== JAVASCRIPT & MULTI-TENANT LOGIK ==================== -->
+  <script>
+    // MULTI-TENANT DATENBANK
+    let companies = JSON.parse(localStorage.getItem('et_companies')) || [
+      {
+        code: "ET-1000",
+        name: "Elektro Muster GmbH",
+        chefEmail: "chef@muster.de",
+        chefPass: "1234",
+        workers: [
+          { name: "Max Mustermann", email: "max@muster.de", pin: "1111" }
+        ],
+        projects: [
+          { id: 1, name: "Baustelle Stadtmitte", budget: 5000 }
+        ],
+        logs: []
+      }
+    ];
+
+    let currentSession = JSON.parse(localStorage.getItem('et_session')) || null;
+    let timerInterval = null;
+    let clockInTime = null;
+
+    // MODAL & TABS
+    function openLoginModal(tab) {
+      document.getElementById('login-modal').classList.remove('hidden');
+      switchTab(tab);
+    }
+
+    function closeLoginModal() {
+      document.getElementById('login-modal').classList.add('hidden');
+    }
+
+    function switchTab(tab) {
+      const btnM = document.getElementById('tab-btn-mitarbeiter');
+      const btnC = document.getElementById('tab-btn-chef');
+      const btnR = document.getElementById('tab-btn-register');
+
+      const formM = document.getElementById('form-mitarbeiter-login');
+      const formC = document.getElementById('form-chef-login');
+      const formR = document.getElementById('form-register-company');
+
+      [btnM, btnC, btnR].forEach(b => b.className = "py-2.5 rounded-xl transition text-slate-600");
+      [formM, formC, formR].forEach(f => f.classList.add('hidden'));
+
+      if (tab === 'mitarbeiter') {
+        btnM.className = "py-2.5 rounded-xl transition bg-white text-red-600 shadow-sm font-bold";
+        formM.classList.remove('hidden');
+      } else if (tab === 'chef') {
+        btnC.className = "py-2.5 rounded-xl transition bg-white text-slate-900 shadow-sm font-bold";
+        formC.classList.remove('hidden');
+      } else {
+        btnR.className = "py-2.5 rounded-xl transition bg-white text-red-600 shadow-sm font-bold";
+        formR.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    // REGISTRIERUNG
+    function handleCompanyRegistration(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-company-name').value.trim();
+      const email = document.getElementById('reg-chef-email').value.trim();
+      const pass = document.getElementById('reg-chef-password').value.trim();
+
+      const newCode = "ET-" + Math.floor(1000 + Math.random() * 9000);
+
+      const newCompany = {
+        code: newCode,
+        name: name,
+        chefEmail: email,
+        chefPass: pass,
+        workers: [],
+        projects: [{ id: Date.now(), name: "Hauptprojekt / Allgemein", budget: 10000 }],
+        logs: []
+      };
+
+      companies.push(newCompany);
+      localStorage.setItem('et_companies', JSON.stringify(companies));
+
+      alert(`Firma erfolgreich registriert!\n\nIhr Firmen-Code lautet: ${newCode}\nTeilen Sie diesen Code Ihren Mitarbeitern für den Login mit.`);
+      
+      currentSession = { companyCode: newCode, userEmail: email, role: 'chef' };
+      saveSessionAndOpenApp();
+    }
+
+    // CHEF LOGIN
+    function handleChefLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-chef-email').value.trim();
+      const pass = document.getElementById('login-chef-pin').value.trim();
+
+      const comp = companies.find(c => c.chefEmail.toLowerCase() === email.toLowerCase() && c.chefPass === pass);
+
+      if (comp) {
+        currentSession = { companyCode: comp.code, userEmail: email, role: 'chef' };
+        saveSessionAndOpenApp();
+      } else {
+        alert("Ungültige Chef-E-Mail oder Passwort!");
+      }
+    }
+
+    // MITARBEITER LOGIN
+    function handleMitarbeiterLogin(e) {
+      e.preventDefault();
+      const code = document.getElementById('login-firmencode').value.trim().toUpperCase();
+      const email = document.getElementById('login-worker-email').value.trim();
+      const pin = document.getElementById('login-worker-pin').value.trim();
+
+      const comp = companies.find(c => c.code === code);
+      if (!comp) return alert("Firmen-Code nicht gefunden!");
+
+      const worker = comp.workers.find(w => w.email.toLowerCase() === email.toLowerCase() && w.pin === pin);
+      if (!worker) return alert("Falsche Mitarbeiter-E-Mail oder PIN!");
+
+      currentSession = { companyCode: comp.code, userEmail: email, role: 'mitarbeiter', userName: worker.name };
+      saveSessionAndOpenApp();
+    }
+
+    // DASHBOARD
+    function saveSessionAndOpenApp() {
+      localStorage.setItem('et_session', JSON.stringify(currentSession));
+      closeLoginModal();
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      if (!currentSession) return;
+
+      const comp = companies.find(c => c.code === currentSession.companyCode);
+      if (!comp) return logoutApp();
+
+      document.getElementById('app-dashboard').classList.remove('hidden');
+      document.getElementById('dash-company-name').innerText = comp.name;
+      document.getElementById('dash-firmcode-badge').innerText = `Code: ${comp.code}`;
+
+      const workerView = document.getElementById('dash-mitarbeiter-view');
+      const chefView = document.getElementById('dash-chef-view');
+      const badge = document.getElementById('dash-user-badge');
+
+      if (currentSession.role === 'chef') {
+        badge.innerText = "Inhaber / Chef";
+        chefView.classList.remove('hidden');
+        workerView.classList.add('hidden');
+        renderChefView(comp);
+      } else {
+        badge.innerText = `Mitarbeiter: ${currentSession.userName}`;
+        chefView.classList.add('hidden');
+        workerView.classList.remove('hidden');
+        populateProjectsDropdown(comp);
+      }
+
+      renderCompanyLogs(comp);
+      lucide.createIcons();
+    }
+
+    function populateProjectsDropdown(comp) {
+      const select = document.getElementById('dash-project-select');
+      select.innerHTML = comp.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+    }
+
+    function renderChefView(comp) {
+      const wList = document.getElementById('dash-worker-list');
+      wList.innerHTML = comp.workers.length ? comp.workers.map(w => `
+        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div><div class="font-bold text-slate-800">${w.name}</div><div class="text-slate-500">${w.email}</div></div>
+          <span class="font-mono bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">PIN: ${w.pin}</span>
+        </div>
+      `).join('') : '<div class="text-slate-400">Noch keine Mitarbeiter angelegt</div>';
+
+      const pList = document.getElementById('dash-project-list');
+      pList.innerHTML = comp.projects.map(p => `
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between font-bold">
+          <span>${p.name}</span><span>${p.budget} €</span>
+        </div>
+      `).join('');
+    }
+
+    function addWorkerToCompany() {
+      const comp = companies.find(c => c.code === currentSession.companyCode);
+      const name = document.getElementById('add-worker-name').value.trim();
+      const email = document.getElementById('add-worker-email').value.trim();
+      const pin = document.getElementById('add-worker-pin').value.trim();
+
+      if(!name || !email || !pin) return alert("Alle Felder ausfüllen!");
+
+      comp.workers.push({ name, email, pin });
+      localStorage.setItem('et_companies', JSON.stringify(companies));
+
+      document.getElementById('add-worker-name').value = '';
+      document.getElementById('add-worker-email').value = '';
+      document.getElementById('add-worker-pin').value = '';
+
+      renderChefView(comp);
+    }
+
+    function addProjectToCompany() {
+      const comp = companies.find(c => c.code === currentSession.companyCode);
+      const name = document.getElementById('add-proj-name').value.trim();
+      const budget = parseFloat(document.getElementById('add-proj-budget').value);
+
+      if(!name || isNaN(budget)) return alert("Bitte gültigen Namen und Budget eingeben!");
+
+      comp.projects.push({ id: Date.now(), name, budget });
+      localStorage.setItem('et_companies', JSON.stringify(companies));
+
+      document.getElementById('add-proj-name').value = '';
+      document.getElementById('add-proj-budget').value = '';
+
+      renderChefView(comp);
+    }
+
+    // STEMPELUHR
+    function clockIn() {
+      clockInTime = new Date();
+      document.getElementById('btn-clock-in').disabled = true;
+      document.getElementById('btn-clock-in').classList.add('opacity-50');
+      document.getElementById('btn-clock-out').disabled = false;
+      document.getElementById('btn-clock-out').classList.remove('opacity-50', 'cursor-not-allowed');
+
+      document.getElementById('dash-timer-status').innerText = "Zeiterfassung läuft...";
+
+      timerInterval = setInterval(() => {
+        const diff = new Date(new Date() - clockInTime);
+        const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+        const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+        const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+        document.getElementById('dash-timer').innerText = `${h}:${m}:${s}`;
+      }, 1000);
+    }
+
+    function clockOut() {
+      clearInterval(timerInterval);
+      const endTime = new Date();
+      const hours = ((endTime - clockInTime) / 3600000).toFixed(2);
+
+      const comp = companies.find(c => c.code === currentSession.companyCode);
+      const projId = document.getElementById('dash-project-select').value;
+      const proj = comp.projects.find(p => p.id == projId);
+
+      comp.logs.unshift({
+        id: Date.now(),
+        worker: currentSession.userName,
+        project: proj ? proj.name : "Allgemein",
+        hours: parseFloat(hours),
+        date: new Date().toLocaleDateString('de-DE')
+      });
+
+      localStorage.setItem('et_companies', JSON.stringify(companies));
+
+      document.getElementById('dash-timer').innerText = "00:00:00";
+      document.getElementById('dash-timer-status').innerText = "Gespeichert!";
+      document.getElementById('btn-clock-in').disabled = false;
+      document.getElementById('btn-clock-in').classList.remove('opacity-50');
+      document.getElementById('btn-clock-out').disabled = true;
+      document.getElementById('btn-clock-out').classList.add('opacity-50', 'cursor-not-allowed');
+
+      renderCompanyLogs(comp);
+    }
+
+    function renderCompanyLogs(comp) {
+      const logsContainer = document.getElementById('dash-logs-list');
+      const filtered = (currentSession.role === 'mitarbeiter')
+        ? comp.logs.filter(l => l.worker === currentSession.userName)
+        : comp.logs;
+
+      document.getElementById('print-company-info').innerText = `Firma: ${comp.name} | Code: ${comp.code}`;
+
+      if(!filtered.length) {
+        logsContainer.innerHTML = `<div class="text-slate-400 text-center py-4">Keine Arbeitszeiten protokolliert</div>`;
+        return;
+      }
+
+      logsContainer.innerHTML = filtered.map(l => `
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <div class="font-bold text-slate-800">${l.project}</div>
+            <div class="text-slate-500">${l.worker} • ${l.date}</div>
+          </div>
+          <div class="font-mono font-bold text-red-600">${l.hours} Std.</div>
+        </div>
+      `).join('');
+    }
+
+    function exportCompanyCSV() {
+      const comp = companies.find(c => c.code === currentSession.companyCode);
+      let csv = "Datum;Mitarbeiter;Projekt;Stunden\n";
+      comp.logs.forEach(l => { csv += `${l.date};${l.worker};${l.project};${l.hours}\n`; });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `Zeiten_${comp.code}.csv`; a.click();
+    }
+
+    function logoutApp() {
+      currentSession = null;
+      localStorage.removeItem('et_session');
+      document.getElementById('app-dashboard').classList.add('hidden');
+    }
+
+    function submitContact(e) {
+      e.preventDefault();
+      alert("Vielen Dank! Ihre Nachricht wurde gesendet.");
+      e.target.reset();
+    }
+
+    window.onload = function() {
+      lucide.createIcons();
+      if(currentSession) renderDashboard();
+    };
+  </script>
+</body>
+</html>
