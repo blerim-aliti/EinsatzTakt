@@ -153,7 +153,7 @@
     </div>
   </section>
 
-  <!-- ==================== KONTAKTFORMULAR (FORMSPREE) ==================== -->
+  <!-- ==================== KONTAKTFORMULAR ==================== -->
   <section id="kontakt" class="py-20 bg-white no-print">
     <div class="max-w-3xl mx-auto px-4 sm:px-6">
       <div class="bg-slate-50 rounded-3xl p-8 sm:p-12 border border-slate-200/60">
@@ -195,13 +195,170 @@
     </div>
   </section>
 
-  <!-- ==================== MODAL 1: MITARBEITER LOGIN ==================== -->
+  <!-- ==================== FOOTER SECTION ==================== -->
+  <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+        
+        <!-- Spalte 1: Brand & Newsletter -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-red-600 rounded-xl flex items-center justify-center text-white font-bold shadow-md">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-black tracking-tight text-white">Einsatz<span class="text-red-600">Takt</span> Pro</span>
+          </div>
+          
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Die universelle B2B-Plattform für Zeiterfassung, Einsatzplanung, Stundennachweise und Fuhrparkmanagement in Deutschland, Österreich und der Schweiz.
+          </p>
+
+          <!-- Newsletter Formular -->
+          <div class="pt-2">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">EinsatzTakt Business Newsletter</h4>
+            <p class="text-[11px] text-slate-500 mb-3">Erhalten Sie Updates zu Gesetzesänderungen (Arbeitszeiterfassung) & neue Features.</p>
+            
+            <form action="https://formspree.io/f/mpppqgvj" method="POST" onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+              <div class="flex gap-2">
+                <input type="email" name="newsletter_email" required placeholder="ihre@firma.de" class="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-600 w-full">
+                <button type="submit" id="newsletter-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex-shrink-0">
+                  Abonnieren
+                </button>
+              </div>
+              <div id="newsletter-success" class="hidden text-[11px] text-emerald-400 font-semibold">✓ Erfolgreich für den Newsletter angemeldet!</div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Spalte 2: Produkt & Features -->
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Produkt</h4>
+          <ul class="space-y-2.5 text-xs font-medium">
+            <li><a href="#branchen" class="hover:text-white transition">Zeiterfassung</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Live Stempeluhr</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">B2B Mandantensystem</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">PDF & CSV Export</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Support-System</a></li>
+          </ul>
+        </div>
+
+        <!-- Spalte 3: Branchen & Vorlagen -->
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Branchen</h4>
+          <ul class="space-y-2.5 text-xs font-medium">
+            <li><a href="#branchen" class="hover:text-white transition">Handwerk & Elektrik</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Bau & Sanierung</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Pflege & Soziales</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Gebäudereinigung</a></li>
+            <li><a href="#branchen" class="hover:text-white transition">Logistik & Kurier</a></li>
+          </ul>
+        </div>
+
+        <!-- Spalte 4: Zugänge & Rechtliches -->
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Zugänge & Rechtliches</h4>
+          <ul class="space-y-2.5 text-xs font-medium">
+            <li><button onclick="openModal('modal-mitarbeiter-login')" class="hover:text-white text-left transition">Mitarbeiter Login</button></li>
+            <li><button onclick="openModal('modal-chef-login')" class="hover:text-white text-left transition">Chef Login</button></li>
+            <li><button onclick="openModal('modal-register-company')" class="hover:text-white text-left transition">Firma anlegen</button></li>
+            <li><button onclick="openModal('modal-impressum')" class="hover:text-white text-left transition">Impressum</button></li>
+            <li><button onclick="openModal('modal-datenschutz')" class="hover:text-white text-left transition">Datenschutzerklärung</button></li>
+            <li><button onclick="openModal('modal-agb')" class="hover:text-white text-left transition">AGB (B2B)</button></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-slate-400 font-semibold">EinsatzTakt Cloud Server Status: <span class="text-emerald-400">100% Online</span></span>
+        </div>
+        <p class="text-slate-500 text-center sm:text-right">
+          © <span id="footer-year">2026</span> EinsatzTakt Pro. Alle Rechte vorbehalten. Made in Germany.
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==================== RECHTLICHE MODALS ==================== -->
+  
+  <!-- IMPRESSUM MODAL -->
+  <div id="modal-impressum" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-slate-100 relative">
+      <button onclick="closeModal('modal-impressum')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h2 class="text-2xl font-black text-slate-900 mb-4">Impressum</h2>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG):</strong></p>
+        <p>
+          EinsatzTakt Pro<br>
+          Vertreten durch: Iljmi Aliti<br>
+          Deutschland
+        </p>
+        <p><strong>Kontakt:</strong><br>
+          Website: <a href="https://einsatztakt.de" class="text-red-600 underline">https://einsatztakt.de</a><br>
+          E-Mail: support@einsatztakt.de
+        </p>
+        <p><strong>EU-Streitschlichtung:</strong><br>
+          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" class="text-red-600 underline">https://ec.europa.eu/consumers/odr</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATENSCHUTZ MODAL -->
+  <div id="modal-datenschutz" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-slate-100 relative">
+      <button onclick="closeModal('modal-datenschutz')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h2 class="text-2xl font-black text-slate-900 mb-4">Datenschutzerklärung</h2>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>1. Datenschutz auf einen Blick</strong><br>
+          Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Sämtliche mandantenspezifische Daten (Arbeitszeiten, Mitarbeiterliste) werden lokal im Browser des Mandanten (LocalStorage) sowie über gesicherte HTTPS-Schnittstellen verarbeitet.
+        </p>
+        <p><strong>2. Erfassung von Daten bei der Registrierung</strong><br>
+          Bei der Firmenregistrierung werden Daten wie Firmenname, Inhabername, Adresse, Telefonnummer und E-Mail-Adresse erfasst, um den Firmen-Code auszustellen und die Dienstleistung bereitzustellen.
+        </p>
+        <p><strong>3. E-Mail-Versand (EmailJS & Formspree)</strong><br>
+          Für die automatische Zustellung des Firmen-Codes sowie für Kontaktanfragen nutzen wir die Dienste EmailJS und Formspree. Daten werden ausschließlich zur Bearbeitung der jeweiligen Anfrage verarbeitet.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGB MODAL -->
+  <div id="modal-agb" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-slate-100 relative">
+      <button onclick="closeModal('modal-agb')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h2 class="text-2xl font-black text-slate-900 mb-4">Allgemeine Geschäftsbedingungen (B2B)</h2>
+      <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
+        <p><strong>§ 1 Geltungsbereich</strong><br>
+          Diese AGB gelten für alle Verträge über die Nutzung der Software-as-a-Service Plattform EinsatzTakt Pro zwischen EinsatzTakt Pro und gewerblichen Kunden (B2B).
+        </p>
+        <p><strong>§ 2 Leistungsumfang</strong><br>
+          EinsatzTakt Pro stellt eine webbasierte Software zur Arbeitszeiterfassung, Projektzuordnung und Mitarbeiterverwaltung bereit.
+        </p>
+        <p><strong>§ 3 Pflichten des Kunden</strong><br>
+          Der Kunde ist verpflichtet, seinen zugewiesenen Firmen-Code sowie Zugangsdaten vertraulich zu behandeln und vor dem Zugriff Dritter zu schützen.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ÜBRIGE MODALS (LOGIN / REGISTRIERUNG) ==================== -->
   <div id="modal-mitarbeiter-login" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-100 relative">
       <button onclick="closeModal('modal-mitarbeiter-login')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
-
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
           <i data-lucide="user" class="w-6 h-6"></i>
@@ -209,7 +366,6 @@
         <h2 class="text-2xl font-black text-slate-900">Mitarbeiter Login</h2>
         <p class="text-xs text-slate-500">Firmen-Code und Zugangsdaten eingeben</p>
       </div>
-
       <form onsubmit="handleMitarbeiterLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmen-Code</label>
@@ -224,20 +380,17 @@
           <input type="password" id="login-worker-pin" required placeholder="4-stellige PIN" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
         </div>
         <button type="submit" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
-          <i data-lucide="log-in" class="w-4 h-4"></i>
-          Einloggen & Stempeluhr öffnen
+          <i data-lucide="log-in" class="w-4 h-4"></i> Einloggen & Stempeluhr öffnen
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: CHEF LOGIN ==================== -->
   <div id="modal-chef-login" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-100 relative">
       <button onclick="closeModal('modal-chef-login')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
-
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
           <i data-lucide="shield-check" class="w-6 h-6 text-red-500"></i>
@@ -245,7 +398,6 @@
         <h2 class="text-2xl font-black text-slate-900">Chef / Inhaber Login</h2>
         <p class="text-xs text-slate-500">Verwaltungszentrale Ihrer Firma</p>
       </div>
-
       <form onsubmit="handleChefLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmen-E-Mail</label>
@@ -259,20 +411,17 @@
           <input type="password" id="login-chef-pin" required placeholder="Ihr Passwort" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
         </div>
         <button type="submit" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
-          <i data-lucide="shield-check" class="w-4 h-4 text-red-500"></i>
-          In Chef-Zentrale einloggen
+          <i data-lucide="shield-check" class="w-4 h-4 text-red-500"></i> In Chef-Zentrale einloggen
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ==================== MODAL 3: AUSFÜHRLICHE FIRMEN REGISTRIERUNG ==================== -->
   <div id="modal-register-company" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto border border-slate-100 relative">
       <button onclick="closeModal('modal-register-company')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
-
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
           <i data-lucide="building-2" class="w-6 h-6"></i>
@@ -280,7 +429,6 @@
         <h2 class="text-2xl font-black text-slate-900">Vollständige Firmenregistrierung</h2>
         <p class="text-xs text-slate-500">Inklusive Stammdaten für Rechnungen & Verwaltung</p>
       </div>
-
       <form onsubmit="handleCompanyRegistration(event)" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
@@ -298,7 +446,6 @@
             </select>
           </div>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-2">
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Straße & Hausnummer</label>
@@ -309,7 +456,6 @@
             <input type="text" id="reg-city" required placeholder="10115 Berlin" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
           </div>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Telefonnummer</label>
@@ -320,7 +466,6 @@
             <input type="text" id="reg-chef-name" required placeholder="Max Mustermann" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
           </div>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Geschäftliche E-Mail</label>
@@ -331,27 +476,21 @@
             <input type="password" id="reg-chef-password" required placeholder="Mindestens 6 Zeichen" class="w-full p-3 border rounded-xl bg-slate-50 text-sm focus:ring-2 focus:ring-red-500 outline-none">
           </div>
         </div>
-
         <button type="submit" id="reg-submit-btn" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 mt-2">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          Firma kostenfrei anlegen & Code per E-Mail erhalten
+          <i data-lucide="plus-circle" class="w-4 h-4"></i> Firma kostenfrei anlegen & Code per E-Mail erhalten
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ==================== MODAL 4: ERFOLGS-BILDSCHIRM ==================== -->
   <div id="modal-reg-success" class="modal-backdrop fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-100 text-center relative overflow-hidden">
       <div class="absolute -top-12 -right-12 w-32 h-32 bg-emerald-100 rounded-full blur-2xl"></div>
-
       <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10 shadow-inner">
         <i data-lucide="check-circle-2" class="w-10 h-10"></i>
       </div>
-
       <h2 class="text-2xl font-black text-slate-900 relative z-10">Firma erfolgreich angelegt!</h2>
       <p class="text-xs text-slate-500 mt-1 relative z-10">Eine Bestätigungs-E-Mail mit allen Stammdaten und dem Firmen-Code wurde an Sie gesendet.</p>
-
       <div class="my-6 p-4 rounded-2xl bg-slate-900 text-white relative z-10 border border-slate-800">
         <span class="text-[10px] uppercase font-bold text-slate-400 tracking-widest block mb-1">Ihr eindeutiger Firmen-Code</span>
         <div class="flex items-center justify-center gap-3">
@@ -361,15 +500,13 @@
           </button>
         </div>
       </div>
-
       <button onclick="closeModal('modal-reg-success'); renderDashboard();" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2">
-        <i data-lucide="arrow-right" class="w-5 h-5"></i>
-        Direkt zur Chef-Zentrale
+        <i data-lucide="arrow-right" class="w-5 h-5"></i> Direkt zur Chef-Zentrale
       </button>
     </div>
   </div>
 
-  <!-- ==================== DASHBOARD / APP AREA ==================== -->
+  <!-- ==================== DASHBOARD AREA ==================== -->
   <div id="app-dashboard" class="fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto hidden text-slate-800">
     <header class="bg-slate-950 text-white p-4 border-b border-slate-800 sticky top-0 z-40">
       <div class="max-w-3xl mx-auto flex justify-between items-center">
@@ -385,21 +522,17 @@
             </div>
           </div>
         </div>
-
         <button onclick="logoutApp()" class="text-xs bg-slate-900 hover:bg-slate-800 text-red-400 border border-slate-800 font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
-          <i data-lucide="log-out" class="w-4 h-4"></i>
-          Beenden
+          <i data-lucide="log-out" class="w-4 h-4"></i> Beenden
         </button>
       </div>
     </header>
 
     <main class="max-w-3xl mx-auto p-4 space-y-4 pb-20">
-      <!-- MITARBEITER VIEW -->
       <div id="dash-mitarbeiter-view" class="space-y-4 hidden">
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i data-lucide="play-circle" class="w-4 h-4 text-red-600"></i>
-            Digitale Stempeluhr
+            <i data-lucide="play-circle" class="w-4 h-4 text-red-600"></i> Digitale Stempeluhr
           </h3>
           <div class="bg-slate-950 rounded-2xl p-5 mb-4 text-center text-white border border-slate-800">
             <div id="dash-timer" class="text-4xl font-mono font-black text-red-500">00:00:00</div>
@@ -421,8 +554,7 @@
 
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i data-lucide="help-circle" class="w-4 h-4 text-slate-600"></i>
-            Problem oder Frage an Chef melden
+            <i data-lucide="help-circle" class="w-4 h-4 text-slate-600"></i> Problem oder Frage an Chef melden
           </h3>
           <form onsubmit="submitWorkerTicket(event)" class="space-y-3">
             <input type="text" id="ticket-subject" required placeholder="Betreff (z.B. Material fehlt)" class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs font-semibold">
@@ -434,13 +566,11 @@
         </section>
       </div>
 
-      <!-- CHEF VERWALTUNGS-PANEL -->
       <div id="dash-chef-view" class="space-y-4 hidden">
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <div class="flex justify-between items-center mb-3">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
-              Team Pünktlichkeits-Score
+              <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i> Team Pünktlichkeits-Score
             </h3>
             <span class="text-xs font-black bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">94% Pünktlich</span>
           </div>
@@ -451,8 +581,7 @@
 
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
-            Mitarbeiter dieser Firma
+            <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i> Mitarbeiter dieser Firma
           </h3>
           <div id="dash-worker-list" class="space-y-2 text-xs"></div>
           
@@ -471,14 +600,12 @@
 
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i data-lucide="life-buoy" class="w-4 h-4 text-red-600"></i>
-            Support-Tickets der Mitarbeiter
+            <i data-lucide="life-buoy" class="w-4 h-4 text-red-600"></i> Support-Tickets der Mitarbeiter
           </h3>
           <div id="dash-tickets-list" class="space-y-2 text-xs"></div>
         </section>
       </div>
 
-      <!-- ZEITPROTOKOLL -->
       <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100 print-area">
         <div class="hidden print-header">
           <h1 class="text-2xl font-black">EinsatzTakt Pro – Arbeitszeitprotokoll</h1>
@@ -487,8 +614,7 @@
 
         <div class="flex justify-between items-center mb-3 no-print">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i>
-            Erfasste Stunden
+            <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> Erfasste Stunden
           </h3>
           <div class="flex gap-2">
             <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-lg flex items-center gap-1">
@@ -505,7 +631,7 @@
     </main>
   </div>
 
-  <!-- ==================== SCRIPT ==================== -->
+  <!-- ==================== SCRIPT LOGIK ==================== -->
   <script>
     let companies = JSON.parse(localStorage.getItem('et_companies')) || [];
     let currentSession = JSON.parse(localStorage.getItem('et_session')) || null;
@@ -514,6 +640,21 @@
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function handleNewsletterSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('newsletter-btn');
+      const success = document.getElementById('newsletter-success');
+      btn.disabled = true;
+      btn.innerText = "Sende...";
+
+      fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } })
+        .then(res => {
+          btn.disabled = false;
+          btn.innerText = "Abonnieren";
+          if (res.ok) { success.classList.remove('hidden'); e.target.reset(); }
+        });
+    }
 
     function handleCompanyRegistration(e) {
       e.preventDefault();
@@ -546,7 +687,6 @@
       companies.push(newCompany);
       localStorage.setItem('et_companies', JSON.stringify(companies));
 
-      // E-Mail über EmailJS mit allen Daten versenden
       emailjs.send("service_jw30gf1", "template_einsatztakt", {
         to_name: chefName,
         to_email: email,
