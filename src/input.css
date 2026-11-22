@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-scene {
+  background:
+    radial-gradient(ellipse at 75% 14%, rgba(254, 226, 226, 0.94), transparent 34rem),
+    radial-gradient(ellipse at 3% 95%, rgba(255, 237, 213, 0.78), transparent 30rem),
+    linear-gradient(135deg, #fff 0%, #fffafa 48%, #f8fafc 100%);
+}
+
+.hero-grid {
+  background-image: linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  opacity: 0.5;
+}
+
+.hero-glow {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.hero-glow-one {
+  width: 22rem;
+  height: 22rem;
+  top: 5rem;
+  right: -7rem;
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.14), transparent 70%);
+  animation: glow-drift 14s ease-in-out infinite alternate;
+}
+
+.hero-glow-two {
+  width: 18rem;
+  height: 18rem;
+  bottom: -5rem;
+  left: 28%;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.12), transparent 70%);
+  animation: glow-drift 18s ease-in-out infinite alternate-reverse;
+}
+
+.hero-title-accent {
+  background: linear-gradient(100deg, #dc2626 5%, #ef4444 48%, #f97316 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-preview-wrap {
+  perspective: 1200px;
+}
+
+.hero-preview {
+  animation: preview-enter 900ms cubic-bezier(0.2, 0.75, 0.25, 1) both, preview-float 8s ease-in-out 900ms infinite;
+  transform-origin: center;
+}
+
+.hero-orbit {
+  z-index: -1;
+  border: 1px solid rgba(239, 68, 68, 0.13);
+  pointer-events: none;
+}
+
+.hero-orbit-one {
+  inset: -1.5rem;
+  animation: orbit-turn 36s linear infinite;
+}
+
+.hero-orbit-two {
+  inset: -3rem 1.5rem;
+  border-color: rgba(148, 163, 184, 0.2);
+  animation: orbit-turn 48s linear infinite reverse;
+}
+
+.hero-float-card {
+  animation: card-float 6s ease-in-out infinite;
+}
+
+.hero-float-card-lower {
+  animation-delay: -2.5s;
+}
+
+@keyframes glow-drift {
+  from { transform: translate3d(-1rem, 0, 0) scale(0.94); }
+  to { transform: translate3d(1.5rem, 1rem, 0) scale(1.08); }
+}
+
+@keyframes preview-enter {
+  from { opacity: 0; transform: translate3d(0, 1.5rem, 0) rotateY(-7deg) scale(0.98); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) rotateY(0) scale(1); }
+}
+
+@keyframes preview-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.5rem); }
+}
+
+@keyframes orbit-turn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.4rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body { background: white !important; color: black !important; padding: 0 !important; }
+  header, nav, .modal-backdrop, .no-print, button, footer { display: none !important; }
+  main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  .print-area { border: none !important; box-shadow: none !important; }
+  .print-header { display: block !important; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+}
