@@ -7,6 +7,8 @@ let totalPauseMs = 0;
 let isPaused = false;
 let currentGpsLocation = null;
 
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
 async function api(url, options = {}) {
   const response = await fetch(url, {
     ...options,
@@ -379,6 +381,11 @@ async function logoutApp() {
 }
 
 window.addEventListener('load', async () => {
+  if (!window.location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  const dateLabel = document.querySelector('[data-today-date]');
+  if (dateLabel) {
+    dateLabel.textContent = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'short' }).format(new Date());
+  }
   lucide.createIcons();
   document.getElementById('contact-form').addEventListener('submit', handleContactSubmit);
   document.getElementById('newsletter-form').addEventListener('submit', handleNewsletterSubmit);

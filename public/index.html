@@ -17,9 +17,9 @@
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-red-500 selection:text-white">
 
   <!-- NAVIGATION -->
-  <header class="fixed top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm no-print">
+  <header class="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl border-b border-white/70 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
+
       <!-- Logo SVG -->
       <a href="#" class="flex items-center gap-3">
         <svg class="w-11 h-11 drop-shadow-md" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,36 +61,177 @@
   </header>
 
   <!-- HERO SECTION -->
-  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-bold mb-6">
-        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-        Multi-Tenant Plattform mit GPS & Pausen-Tracking für Handwerk & Bau
+  <section class="hero-scene relative isolate min-h-[calc(100svh-5rem)] overflow-hidden pt-28 pb-16 sm:pt-32 md:pt-36">
+    <div class="hero-grid absolute inset-0" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-one absolute rounded-full" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-two absolute rounded-full" aria-hidden="true"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 rounded-full border border-red-200/80 bg-white/80 px-4 py-2 text-xs font-bold text-red-700 shadow-sm backdrop-blur">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-40"></span>
+            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-600"></span>
+          </span>
+          ZEITERFASSUNG, DIE MIT IHREM TEAM TAKT HÄLT
+        </div>
+
+        <h1 class="mt-7 text-5xl font-black leading-[1.04] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+          Jeder Einsatz.
+          <span class="hero-title-accent block">Jede Minute.</span>
+          Alles im Blick.
+        </h1>
+
+        <p class="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+          Arbeitszeiten, Projekte und Pausen an einem Ort. Einfach für Ihr Team, transparent für Ihren Betrieb.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <button data-modal-open="modal-register-company" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-7 py-4 font-bold text-white shadow-xl shadow-red-600/25 transition hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-red-600/35">
+            <i data-lucide="building-2" class="h-5 w-5"></i> Kostenlos starten
+            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+          </button>
+          <button data-modal-open="modal-mitarbeiter-login" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-7 py-4 font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white">
+            <i data-lucide="smartphone" class="h-5 w-5 text-red-600"></i> Mitarbeiter-Login
+          </button>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
+          <span class="inline-flex items-center gap-2"><i data-lucide="circle-check" class="h-4 w-4 text-emerald-600"></i> Schnell eingerichtet</span>
+          <span class="inline-flex items-center gap-2"><i data-lucide="circle-check" class="h-4 w-4 text-emerald-600"></i> Für jedes Team</span>
+          <span class="inline-flex items-center gap-2"><i data-lucide="circle-check" class="h-4 w-4 text-emerald-600"></i> Klar dokumentiert</span>
+        </div>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight">
-        Perfekter Takt für Ihre <span class="text-red-600">Arbeitszeiten</span> & Einsätze
-      </h1>
+      <div class="hero-preview-wrap relative mx-auto w-full max-w-xl lg:ml-auto" aria-label="Vorschau der EinsatzTakt Zeiterfassung">
+        <div class="hero-orbit hero-orbit-one absolute rounded-full" aria-hidden="true"></div>
+        <div class="hero-orbit hero-orbit-two absolute rounded-full" aria-hidden="true"></div>
+        <div class="hero-preview relative rounded-[2rem] border border-white/80 bg-white/75 p-3 shadow-2xl shadow-slate-900/15 backdrop-blur-xl sm:p-4">
+          <div class="overflow-hidden rounded-[1.4rem] border border-slate-200/80 bg-slate-50">
+            <div class="flex items-center justify-between border-b border-slate-200/80 bg-white px-5 py-4">
+              <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-white shadow-lg shadow-red-600/20">
+                  <i data-lucide="clock-3" class="h-5 w-5"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-black text-slate-900">Team-Übersicht</p>
+                  <p class="text-xs text-slate-500">Heute, <span data-today-date></span></p>
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold text-emerald-700">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Live
+              </span>
+            </div>
 
-      <p class="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-medium">
-        Die universelle Komplettlösung für branchenübergreifende Zeiterfassung, GPS-Standortnachweise, gesetzkonforme Pausen & PDF-Exporte.
-      </p>
+            <div class="grid grid-cols-2 gap-3 p-4 sm:p-5">
+              <div class="rounded-2xl border border-slate-200/80 bg-white p-4">
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+                  Aktive Einsätze <i data-lucide="activity" class="h-4 w-4 text-red-500"></i>
+                </div>
+                <div class="mt-3 flex items-end gap-2">
+                  <span class="text-3xl font-black tracking-tight text-slate-900">08</span>
+                  <span class="mb-1 text-[11px] font-semibold text-emerald-600">im Einsatz</span>
+                </div>
+                <div class="mt-3 flex -space-x-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-red-100 text-[9px] font-black text-red-700">MK</span>
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-amber-100 text-[9px] font-black text-amber-700">AS</span>
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-sky-100 text-[9px] font-black text-sky-700">TB</span>
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-slate-100 text-[9px] font-bold text-slate-600">+5</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-slate-200/80 bg-white p-4">
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+                  Stunden heute <i data-lucide="timer" class="h-4 w-4 text-amber-500"></i>
+                </div>
+                <div class="mt-3 flex items-end gap-2">
+                  <span class="text-3xl font-black tracking-tight text-slate-900">42,5</span>
+                  <span class="mb-1 text-[11px] font-semibold text-slate-500">Std.</span>
+                </div>
+                <div class="mt-3 flex h-2 gap-1 overflow-hidden rounded-full bg-slate-100">
+                  <span class="w-2/5 rounded-full bg-red-500"></span>
+                  <span class="w-1/4 rounded-full bg-amber-400"></span>
+                  <span class="w-1/5 rounded-full bg-emerald-500"></span>
+                </div>
+              </div>
+            </div>
 
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-        <button data-modal-open="modal-register-company" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2">
-          <i data-lucide="building-2" class="w-5 h-5"></i> Eigene Firma kostenlos anlegen
-        </button>
-        <button data-modal-open="modal-mitarbeiter-login" class="w-full sm:w-auto px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition flex items-center justify-center gap-2">
-          <i data-lucide="smartphone" class="w-5 h-5 text-red-600"></i> Mitarbeiter Login
-        </button>
+            <div class="mx-4 mb-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:mx-5 sm:mb-5">
+              <div class="mb-4 flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-bold text-slate-900">Letzte Aktivitäten</p>
+                  <p class="mt-0.5 text-[11px] text-slate-500">Dein Team auf einen Blick</p>
+                </div>
+                <span class="rounded-lg bg-slate-100 p-2 text-slate-500"><i data-lucide="sliders-horizontal" class="h-4 w-4"></i></span>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><i data-lucide="play" class="h-4 w-4"></i></div>
+                  <div class="min-w-0 flex-1"><p class="truncate text-xs font-bold text-slate-800">M. Keller · Baustelle Mitte</p><p class="text-[11px] text-slate-500">Arbeitszeit gestartet</p></div>
+                  <span class="text-[11px] font-semibold text-slate-500">08:02</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><i data-lucide="coffee" class="h-4 w-4"></i></div>
+                  <div class="min-w-0 flex-1"><p class="truncate text-xs font-bold text-slate-800">A. Schmidt · Projekt Nord</p><p class="text-[11px] text-slate-500">Pause erfasst</p></div>
+                  <span class="text-[11px] font-semibold text-slate-500">08:15</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-700"><i data-lucide="map-pin" class="h-4 w-4"></i></div>
+                  <div class="min-w-0 flex-1"><p class="truncate text-xs font-bold text-slate-800">T. Braun · Objekt West</p><p class="text-[11px] text-slate-500">Einsatzort bestätigt</p></div>
+                  <span class="text-[11px] font-semibold text-slate-500">08:21</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float-card absolute -left-3 top-12 hidden items-center gap-3 rounded-2xl border border-white/80 bg-white/90 px-4 py-3 shadow-xl shadow-slate-900/10 backdrop-blur sm:flex">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><i data-lucide="shield-check" class="h-5 w-5"></i></span>
+          <span><span class="block text-xs font-black text-slate-900">Alles dokumentiert</span><span class="block text-[10px] text-slate-500">Zeit. Pause. Einsatz.</span></span>
+        </div>
+        <div class="hero-float-card hero-float-card-lower absolute -right-2 bottom-10 hidden items-center gap-3 rounded-2xl border border-white/80 bg-white/90 px-4 py-3 shadow-xl shadow-slate-900/10 backdrop-blur sm:flex">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-600"><i data-lucide="map-pinned" class="h-5 w-5"></i></span>
+          <span><span class="block text-xs font-black text-slate-900">Einsatz im Blick</span><span class="block text-[10px] text-slate-500">Transparenz fürs ganze Team</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VORTEILE -->
+  <section id="vorteile" class="scroll-mt-24 bg-white py-20 sm:py-24 no-print">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto mb-14 max-w-2xl text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5 text-[11px] font-black uppercase tracking-widest text-red-700">
+          <i data-lucide="sparkles" class="h-3.5 w-3.5"></i> Weniger Aufwand. Mehr Überblick.
+        </span>
+        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Alles, was Ihr Arbeitstag braucht.</h2>
+        <p class="mt-4 text-base leading-7 text-slate-600">Ein klarer Überblick für Inhaber und ein einfacher Ablauf für Mitarbeitende – im Büro und unterwegs.</p>
       </div>
 
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <article class="benefit-card group rounded-3xl border border-slate-200/80 bg-slate-50 p-6 transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-red-600 transition group-hover:bg-red-600 group-hover:text-white"><i data-lucide="timer" class="h-6 w-6"></i></div>
+          <h3 class="mt-6 text-lg font-black text-slate-900">Zeiten einfach erfassen</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Arbeitsbeginn, Feierabend und Pausen digital festhalten – ohne Zettelwirtschaft.</p>
+        </article>
+        <article class="benefit-card group rounded-3xl border border-slate-200/80 bg-slate-50 p-6 transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-700 transition group-hover:bg-sky-600 group-hover:text-white"><i data-lucide="map-pinned" class="h-6 w-6"></i></div>
+          <h3 class="mt-6 text-lg font-black text-slate-900">Einsätze zuordnen</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Arbeitsstunden Projekten zuweisen und Einsatznachweise übersichtlich einsehen.</p>
+        </article>
+        <article class="benefit-card group rounded-3xl border border-slate-200/80 bg-slate-50 p-6 transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-700 transition group-hover:bg-amber-500 group-hover:text-white"><i data-lucide="coffee" class="h-6 w-6"></i></div>
+          <h3 class="mt-6 text-lg font-black text-slate-900">Pausen im Blick</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Pausen klar dokumentieren und Arbeitszeiten nachvollziehbar darstellen.</p>
+        </article>
+        <article class="benefit-card group rounded-3xl border border-slate-200/80 bg-slate-50 p-6 transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white"><i data-lucide="file-down" class="h-6 w-6"></i></div>
+          <h3 class="mt-6 text-lg font-black text-slate-900">Berichte exportieren</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Stundennachweise schnell prüfen, drucken oder als CSV weiterverwenden.</p>
+        </article>
+      </div>
     </div>
   </section>
 
   <!-- BRANCHEN -->
-  <section id="branchen" class="py-20 bg-slate-50 border-y border-slate-100 no-print">
+  <section id="branchen" class="scroll-mt-24 py-20 bg-slate-50 border-y border-slate-100 no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <h2 class="text-xs font-bold text-red-600 uppercase tracking-widest mb-2">Universell Einsetzbar</h2>
@@ -123,7 +264,7 @@
   </section>
 
   <!-- KONTAKTFORMULAR -->
-  <section id="kontakt" class="py-20 bg-white no-print">
+  <section id="kontakt" class="scroll-mt-24 py-20 bg-white no-print">
     <div class="max-w-3xl mx-auto px-4 sm:px-6">
       <div class="bg-slate-50 rounded-3xl p-8 sm:p-12 border border-slate-200/60">
         <div class="text-center mb-8">
@@ -397,7 +538,7 @@
     </header>
 
     <main class="max-w-3xl mx-auto p-4 space-y-4 pb-20">
-      
+
       <!-- MITARBEITER VIEW (STEMPELUHR MIT GPS & PAUSE) -->
       <div id="dash-mitarbeiter-view" class="space-y-4 hidden">
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
@@ -463,7 +604,7 @@
             <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i> Mitarbeiter der Firma
           </h3>
           <div id="dash-worker-list" class="space-y-2 text-xs"></div>
-          
+
           <div class="mt-4 pt-4 border-t space-y-2">
             <h4 class="text-xs font-bold text-slate-700">Mitarbeiter anlegen</h4>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">

@@ -224,4 +224,7 @@ test('secures legacy data, tenant APIs, and role-specific actions', async () => 
   assert.match(page.headers.get('content-security-policy'), /script-src 'self'/);
   assert.doesNotMatch(page.headers.get('content-security-policy'), /unsafe-inline/);
   assert.doesNotMatch(html, /onclick=|onsubmit=|localStorage|cdn\.tailwindcss\.com|unpkg\.com|emailjs/);
+  assert.match(html, /<a href="#vorteile"[^>]*>Vorteile<\/a>/);
+  assert.match(html, /<section id="vorteile"/);
+  assert.match(html, /hero-scene/);
 });
