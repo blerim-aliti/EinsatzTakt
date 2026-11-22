@@ -75,6 +75,27 @@ after(async () => {
 });
 
 test('secures legacy data, tenant APIs, and role-specific actions', async () => {
+  const projectRoot = path.join(__dirname, '..');
+  const pagesHtml = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
+  assert.match(pagesHtml, /Jeder Einsatz\./);
+  assert.match(pagesHtml, /<a href="#vorteile"[^>]*>Vorteile<\/a>/);
+  assert.match(pagesHtml, /href="\/app\.css"/);
+  assert.match(pagesHtml, /src="\/app\.js"/);
+  assert.match(pagesHtml, /src="\/vendor\/lucide\.min\.js"/);
+  assert.equal(
+    fs.readFileSync(path.join(projectRoot, 'app.js'), 'utf8'),
+    fs.readFileSync(path.join(projectRoot, 'public', 'app.js'), 'utf8')
+  );
+  assert.equal(
+    fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8'),
+    fs.readFileSync(path.join(projectRoot, 'public', 'index.html'), 'utf8')
+  );
+  assert.equal(
+    fs.readFileSync(path.join(projectRoot, 'app.css'), 'utf8'),
+    fs.readFileSync(path.join(projectRoot, 'public', 'app.css'), 'utf8')
+  );
+  assert.ok(fs.existsSync(path.join(projectRoot, 'vendor', 'lucide.min.js')));
+
   await createLegacyDatabase();
   service = require('../server');
   await service.initializeDatabase();

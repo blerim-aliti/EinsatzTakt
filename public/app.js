@@ -18,8 +18,16 @@ async function api(url, options = {}) {
       ...options.headers
     }
   });
-  const result = response.status === 204 ? {} : await response.json();
-  if (!response.ok) throw new Error(result.error || 'Die Anfrage ist fehlgeschlagen.');
+  const contentType = response.headers.get('content-type') || '';
+  const result = response.status === 204 || !contentType.includes('application/json')
+    ? {}
+    : await response.json();
+  if (!response.ok) {
+    const error = result.error || (response.status === 404
+      ? 'Das Backend ist auf dieser Website noch nicht bereitgestellt. Anmeldung und App-Funktionen sind daher noch nicht verfügbar.'
+      : 'Die Anfrage ist fehlgeschlagen.');
+    throw new Error(error);
+  }
   return result;
 }
 
@@ -423,6 +431,8 @@ window.addEventListener('load', async () => {
   try {
     await loadDashboard();
   } catch (error) {
-    if (!/Nicht angemeldet|Bitte zuerst anmelden/.test(error.message)) showError(error);
+    if (!/Nicht angemeldet|Bitte zuerst anmelden|Backend ist auf dieser Website noch nicht bereitgestellt/.test(error.message)) {
+      showError(error);
+    }
   }
 });
