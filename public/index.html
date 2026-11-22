@@ -10,35 +10,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="EinsatzTakt">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3652/3652191.png">
+  <link rel="stylesheet" href="/app.css">
+  <script defer src="/vendor/lucide.min.js"></script>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Barcode / QR Scanner (html5-qrcode fallback + native BarcodeDetector) -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("3Hr1fpQ2iDchoP8s0");
-    })();
-  </script>
-
-  <style>
-    body {
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-    @media print {
-      body { background: white !important; color: black !important; padding: 0 !important; }
-      header, nav, .modal-backdrop, .no-print, button, footer { display: none !important; }
-      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
-      .print-area { border: none !important; box-shadow: none !important; }
-      .print-header { display: block !important; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
-    }
-  </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-red-500 selection:text-white">
 
@@ -72,13 +46,13 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-3">
-        <button onclick="openModal('modal-mitarbeiter-login')" class="text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-200 hover:border-red-600 hover:text-red-600 transition hidden sm:inline-flex items-center gap-1.5">
+        <button data-modal-open="modal-mitarbeiter-login" class="text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-200 hover:border-red-600 hover:text-red-600 transition hidden sm:inline-flex items-center gap-1.5">
           <i data-lucide="user" class="w-4 h-4"></i> Mitarbeiter Login
         </button>
-        <button onclick="openModal('modal-chef-login')" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md transition flex items-center gap-1.5">
+        <button data-modal-open="modal-chef-login" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md transition flex items-center gap-1.5">
           <i data-lucide="shield-check" class="w-4 h-4"></i> Chef Login
         </button>
-        <button onclick="openModal('modal-register-company')" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/20 transition hidden lg:inline-flex items-center gap-1.5">
+        <button data-modal-open="modal-register-company" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/20 transition hidden lg:inline-flex items-center gap-1.5">
           <i data-lucide="building-2" class="w-4 h-4"></i> Firma anlegen
         </button>
       </div>
@@ -104,10 +78,10 @@
       </p>
 
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-        <button onclick="openModal('modal-register-company')" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2">
+        <button data-modal-open="modal-register-company" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2">
           <i data-lucide="building-2" class="w-5 h-5"></i> Eigene Firma kostenlos anlegen
         </button>
-        <button onclick="openModal('modal-mitarbeiter-login')" class="w-full sm:w-auto px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition flex items-center justify-center gap-2">
+        <button data-modal-open="modal-mitarbeiter-login" class="w-full sm:w-auto px-8 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl transition flex items-center justify-center gap-2">
           <i data-lucide="smartphone" class="w-5 h-5 text-red-600"></i> Mitarbeiter Login
         </button>
       </div>
@@ -156,7 +130,7 @@
           <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Fragen oder individuelle Betreuung?</h2>
           <p class="text-sm text-slate-500 mt-2">Senden Sie uns eine Nachricht. Unser Team unterstützt Sie beim Setup.</p>
         </div>
-        <form action="https://formspree.io/f/mpppqgvj" method="POST" onsubmit="handleContactSubmit(event)" class="space-y-4">
+        <form id="contact-form" action="https://formspree.io/f/mpppqgvj" method="POST" class="space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ihr Name</label>
@@ -204,7 +178,7 @@
           </p>
           <div class="pt-2">
             <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">EinsatzTakt Business Newsletter</h4>
-            <form action="https://formspree.io/f/mpppqgvj" method="POST" onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+            <form id="newsletter-form" action="https://formspree.io/f/mpppqgvj" method="POST" class="space-y-2">
               <div class="flex gap-2">
                 <input type="email" name="newsletter_email" required placeholder="ihre@firma.de" class="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-600 w-full">
                 <button type="submit" id="newsletter-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex-shrink-0">Abonnieren</button>
@@ -235,9 +209,9 @@
         <div>
           <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Rechtliches</h4>
           <ul class="space-y-2.5 text-xs font-medium">
-            <li><button onclick="openModal('modal-impressum')" class="hover:text-white text-left transition">Impressum</button></li>
-            <li><button onclick="openModal('modal-datenschutz')" class="hover:text-white text-left transition">Datenschutz</button></li>
-            <li><button onclick="openModal('modal-agb')" class="hover:text-white text-left transition">AGB (B2B)</button></li>
+            <li><button data-modal-open="modal-impressum" class="hover:text-white text-left transition">Impressum</button></li>
+            <li><button data-modal-open="modal-datenschutz" class="hover:text-white text-left transition">Datenschutz</button></li>
+            <li><button data-modal-open="modal-agb" class="hover:text-white text-left transition">AGB (B2B)</button></li>
           </ul>
         </div>
       </div>
@@ -255,10 +229,10 @@
   <!-- RECHTLICHE MODALS -->
   <div id="modal-impressum" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto relative">
-      <button onclick="closeModal('modal-impressum')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-impressum" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <h2 class="text-2xl font-black text-slate-900 mb-4">Impressum</h2>
       <div class="text-xs text-slate-600 space-y-3">
-        <p><strong>Angaben gemäß § 5 DDG:</strong><br>EinsatzTakt Pro<br>Vertreten durch: Blerim Aliti<br>Deutschland</p>
+        <p><strong>Angaben gemäß § 5 DDG:</strong><br>EinsatzTakt Pro<br>Vertreten durch: Iljmi Aliti<br>Deutschland</p>
         <p>Kontakt: support@einsatztakt.de | https://einsatztakt.de</p>
       </div>
     </div>
@@ -266,7 +240,7 @@
 
   <div id="modal-datenschutz" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto relative">
-      <button onclick="closeModal('modal-datenschutz')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-datenschutz" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <h2 class="text-2xl font-black text-slate-900 mb-4">Datenschutzerklärung</h2>
       <div class="text-xs text-slate-600 space-y-3">
         <p>Verarbeitung von Arbeitszeit-, Pausen- und GPS-Daten nach DSGVO Art. 6 Abs. 1 lit. b.</p>
@@ -276,7 +250,7 @@
 
   <div id="modal-agb" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto relative">
-      <button onclick="closeModal('modal-agb')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-agb" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <h2 class="text-2xl font-black text-slate-900 mb-4">AGB (B2B)</h2>
       <div class="text-xs text-slate-600 space-y-3">
         <p>Gewerbliche Nutzungsbedingungen für die EinsatzTakt Pro Plattform.</p>
@@ -287,15 +261,15 @@
   <!-- LOGIN & REGISTRIERUNGS MODALS -->
   <div id="modal-mitarbeiter-login" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md relative">
-      <button onclick="closeModal('modal-mitarbeiter-login')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-mitarbeiter-login" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3"><i data-lucide="user" class="w-6 h-6"></i></div>
         <h2 class="text-2xl font-black text-slate-900">Mitarbeiter Login</h2>
       </div>
-      <form onsubmit="handleMitarbeiterLogin(event)" class="space-y-4">
+      <form id="worker-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmen-Code</label>
-          <input type="text" id="login-firmencode" required placeholder="z.B. ET-8492" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm font-mono font-bold uppercase">
+          <input type="text" id="login-firmencode" required placeholder="ET-Firmen-Code" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm font-mono font-bold uppercase">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">E-Mail</label>
@@ -303,7 +277,7 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">PIN</label>
-          <input type="password" id="login-worker-pin" required placeholder="4-stellige PIN" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm">
+          <input type="password" id="login-worker-pin" required inputmode="numeric" autocomplete="current-password" placeholder="Ihre Mitarbeiter-PIN" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm">
         </div>
         <button type="submit" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md">Einloggen & Stempeluhr öffnen</button>
       </form>
@@ -312,19 +286,19 @@
 
   <div id="modal-chef-login" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md relative">
-      <button onclick="closeModal('modal-chef-login')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-chef-login" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-3"><i data-lucide="shield-check" class="w-6 h-6 text-red-500"></i></div>
         <h2 class="text-2xl font-black text-slate-900">Chef / Inhaber Login</h2>
       </div>
-      <form onsubmit="handleChefLogin(event)" class="space-y-4">
+      <form id="chef-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmen-E-Mail</label>
           <input type="email" id="login-chef-email" required placeholder="inhaber@firma.de" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Passwort</label>
-          <input type="password" id="login-chef-pin" required placeholder="Ihr Passwort" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm">
+          <input type="password" id="login-chef-pin" required maxlength="200" autocomplete="current-password" placeholder="Ihr Passwort" class="w-full p-3.5 border rounded-xl bg-slate-50 text-sm">
         </div>
         <button type="submit" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-md">In Chef-Zentrale einloggen</button>
       </form>
@@ -333,12 +307,12 @@
 
   <div id="modal-register-company" class="modal-backdrop fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
     <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative">
-      <button onclick="closeModal('modal-register-company')" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button data-modal-close="modal-register-company" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       <div class="text-center mb-6">
         <div class="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3"><i data-lucide="building-2" class="w-6 h-6"></i></div>
         <h2 class="text-2xl font-black text-slate-900">Vollständige Firmenregistrierung</h2>
       </div>
-      <form onsubmit="handleCompanyRegistration(event)" class="space-y-4">
+      <form id="register-company-form" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Firmenname</label>
@@ -381,10 +355,10 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Passwort</label>
-            <input type="password" id="reg-chef-password" required placeholder="Mindestens 6 Zeichen" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
+            <input type="password" id="reg-chef-password" required minlength="12" autocomplete="new-password" placeholder="Mindestens 12 Zeichen" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
           </div>
         </div>
-        <button type="submit" id="reg-submit-btn" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md">Firma kostenfrei anlegen & Code per E-Mail erhalten</button>
+        <button type="submit" id="reg-submit-btn" class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md">Firma kostenfrei anlegen & Code sicher anzeigen</button>
       </form>
     </div>
   </div>
@@ -394,13 +368,13 @@
       <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="check-circle-2" class="w-10 h-10"></i></div>
       <h2 class="text-2xl font-black text-slate-900">Firma erfolgreich angelegt!</h2>
       <div class="my-6 p-4 rounded-2xl bg-slate-900 text-white">
-        <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Ihr Firmen-Code</span>
+        <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Ihr sicherer Firmen-Code</span>
         <div class="flex items-center justify-center gap-3">
           <span id="success-company-code" class="text-3xl font-mono font-black text-emerald-400">ET-0000</span>
-          <button onclick="copyCompanyCode()" class="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-xl"><i data-lucide="copy" class="w-4 h-4"></i></button>
+          <button data-action="copy-company-code" class="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-xl"><i data-lucide="copy" class="w-4 h-4"></i></button>
         </div>
       </div>
-      <button onclick="closeModal('modal-reg-success'); renderDashboard();" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl">Direkt zur Chef-Zentrale</button>
+      <button data-action="show-dashboard" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl">Direkt zur Chef-Zentrale</button>
     </div>
   </div>
 
@@ -418,7 +392,7 @@
             </div>
           </div>
         </div>
-        <button onclick="logoutApp()" class="text-xs bg-slate-900 text-red-400 border border-slate-800 font-bold px-3 py-2 rounded-xl flex items-center gap-1.5"><i data-lucide="log-out" class="w-4 h-4"></i> Beenden</button>
+        <button data-action="logout" class="text-xs bg-slate-900 text-red-400 border border-slate-800 font-bold px-3 py-2 rounded-xl flex items-center gap-1.5"><i data-lucide="log-out" class="w-4 h-4"></i> Beenden</button>
       </div>
     </header>
 
@@ -428,129 +402,31 @@
       <div id="dash-mitarbeiter-view" class="space-y-4 hidden">
         <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i data-lucide="play-circle" class="w-4 h-4 text-red-600"></i> Digitale Stempeluhr, Pausen-Timer & Fahrzeug
+            <i data-lucide="play-circle" class="w-4 h-4 text-red-600"></i> Digitale Stempeluhr (mit GPS & Pause)
           </h3>
-
           <div class="bg-slate-950 rounded-2xl p-5 mb-4 text-center text-white border border-slate-800">
             <div id="dash-timer" class="text-4xl font-mono font-black text-red-500">00:00:00</div>
             <div id="dash-timer-status" class="text-xs text-slate-400 mt-1">Bereit zum Einstempeln</div>
-            <div class="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-amber-300">
-              <i data-lucide="coffee" class="w-3.5 h-3.5 text-amber-400"></i>
-              <span>Aktuelle Pause: <strong id="live-pause-timer">00:00</strong></span>
-              <span class="text-slate-600">|</span>
-              <span>Gesamt Pause: <strong id="total-pause-timer">0 Min.</strong></span>
-            </div>
             <div id="gps-status-indicator" class="text-[11px] text-emerald-400 font-medium mt-2 hidden flex items-center justify-center gap-1">
               <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> GPS-Standort erfasst
             </div>
           </div>
-
-          <!-- PAUSEN-ZIEL & 1-MIN-HINWEIS -->
-          <div class="mb-4 p-3 rounded-xl bg-amber-50/80 border border-amber-200/80">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <label for="pause-target-minutes" class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
-                <i data-lucide="bell-ring" class="w-3.5 h-3.5 text-amber-600"></i> Geplante Pause (Hinweis 1 Min. vor Ende)
-              </label>
-              <div class="flex items-center gap-2">
-                <select id="pause-target-minutes" onchange="updatePauseTargetSelection()" class="p-1.5 border border-amber-300 rounded-lg bg-white text-xs font-bold text-slate-800">
-                  <option value="15">15 Min.</option>
-                  <option value="20">20 Min.</option>
-                  <option value="30" selected>30 Min.</option>
-                  <option value="45">45 Min.</option>
-                  <option value="60">60 Min.</option>
-                  <option value="2">2 Min. (Schnelltest)</option>
-                </select>
-                <button type="button" onclick="previewRelaxedTone()" class="px-2.5 py-1.5 bg-white hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-[11px] font-bold transition">
-                  Ton testen
-                </button>
-              </div>
-            </div>
-            <div id="pause-warning-banner" class="hidden mt-2 p-2.5 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-between">
-              <span>🔔 Deine Pause endet in 1 Minute!</span>
-              <button type="button" onclick="document.getElementById('pause-warning-banner').classList.add('hidden')" class="text-[11px] underline ml-2">OK</button>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-            <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Einsatzort / Projekt wählen</label>
-              <select id="dash-project-select" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-semibold focus:ring-2 focus:ring-red-500 outline-none"></select>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Fahrzeug-Kategorie / Dienstwagen</label>
-              <select id="worker-vehicle-mode" onchange="onWorkerVehicleModeChange()" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-semibold focus:ring-2 focus:ring-red-500 outline-none">
-                <option value="fixed">Festwagen (direkt losfahren)</option>
-                <option value="pool">Springer / Pool-Wagen (Barcode + KM)</option>
-                <option value="none">Kein Firmenwagen / Fuß / ÖPNV</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- KATEGORIE 1: FESTWAGEN -->
-          <div id="worker-fixed-car-box" class="mb-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <i data-lucide="key-round" class="w-3.5 h-3.5 text-emerald-600"></i> Festwagen (mit nach Hause erlaubt)
-            </div>
-            <select id="worker-fixed-car-select" class="w-full p-2.5 border rounded-xl bg-white text-xs font-semibold"></select>
-            <p class="text-[11px] text-slate-500">Fester Dienstwagen: Kein Barcode-Scan nötig – du kannst direkt einstempeln und losfahren.</p>
-          </div>
-
-          <!-- KATEGORIE 2: SPRINGER / POOL-WAGEN MIT BARCODE & KILOMETERSTAND -->
-          <div id="worker-pool-car-box" class="mb-4 p-3.5 rounded-xl bg-red-50/60 border border-red-200 space-y-3 hidden">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-red-900 flex items-center gap-1.5">
-                <i data-lucide="scan-barcode" class="w-4 h-4 text-red-600"></i> Springer / Pool-Wagen (Barcode + KM)
-              </span>
-              <span id="active-pool-trip-badge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Fahrt aktiv</span>
-            </div>
-
-            <div class="flex gap-2">
-              <input type="text" id="worker-scanned-barcode" placeholder="Barcode scannen oder Code eingeben (z.B. CAR-101)" class="flex-1 p-2.5 border rounded-xl bg-white text-xs font-mono font-bold uppercase">
-              <button type="button" onclick="toggleBarcodeCameraScanner()" class="px-3 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shrink-0">
-                <i data-lucide="camera" class="w-3.5 h-3.5"></i> <span id="scan-btn-label">Kamera</span>
-              </button>
-            </div>
-
-            <div id="barcode-reader-container" class="hidden rounded-xl overflow-hidden border border-slate-300 bg-black">
-              <div id="qr-reader" class="w-full"></div>
-              <div class="p-2 bg-slate-900 flex justify-between items-center text-[11px] text-slate-300">
-                <span>Barcode oder QR-Code vor die Kamera halten...</span>
-                <button type="button" onclick="stopBarcodeCameraScanner()" class="text-red-400 font-bold">Schließen</button>
-              </div>
-            </div>
-
-            <div id="pool-km-start-row" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">Kilometerstand Dienstbeginn</label>
-                <input type="number" id="worker-km-start" placeholder="z.B. 84210" class="w-full p-2.5 border rounded-xl bg-white text-xs font-mono">
-              </div>
-              <div class="flex items-end">
-                <button type="button" onclick="confirmPoolVehicleStart()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">
-                  Fahrzeug übernehmen & losfahren
-                </button>
-              </div>
-            </div>
-
-            <div id="pool-km-end-row" class="hidden p-3 rounded-xl bg-white border border-red-200 space-y-2">
-              <div class="text-xs font-bold text-slate-800" id="pool-active-vehicle-info">Aktives Fahrzeug: ---</div>
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">Kilometerstand bei Dienstende / Rückgabe</label>
-                <input type="number" id="worker-km-end" placeholder="End-Kilometerstand eingeben" class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs font-mono">
-              </div>
-            </div>
+          <div class="mb-4">
+            <label class="block text-xs font-bold text-slate-600 mb-1">Einsatzort / Projekt wählen</label>
+            <select id="dash-project-select" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-semibold focus:ring-2 focus:ring-red-500 outline-none"></select>
           </div>
 
           <!-- STEUERUNGS-BUTTONS (Einstempeln, Pause, Ausstempeln) -->
           <div class="space-y-2">
             <div class="grid grid-cols-2 gap-3">
-              <button id="btn-clock-in" onclick="clockIn()" class="py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+              <button id="btn-clock-in" data-action="clock-in" class="py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition">
                 <i data-lucide="play" class="w-4 h-4"></i> Einstempeln
               </button>
-              <button id="btn-pause" onclick="togglePause()" disabled class="py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition">
+              <button id="btn-pause" data-action="clock-pause" disabled class="py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition">
                 <i data-lucide="coffee" class="w-4 h-4"></i> <span id="btn-pause-text">Pause starten</span>
               </button>
             </div>
-            <button id="btn-clock-out" onclick="clockOut()" disabled class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition">
+            <button id="btn-clock-out" data-action="clock-out" disabled class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition">
               <i data-lucide="square" class="w-4 h-4"></i> Ausstempeln & Speichern
             </button>
           </div>
@@ -560,7 +436,7 @@
           <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <i data-lucide="help-circle" class="w-4 h-4 text-slate-600"></i> Support-Ticket an Chef
           </h3>
-          <form onsubmit="submitWorkerTicket(event)" class="space-y-3">
+          <form id="worker-ticket-form" class="space-y-3">
             <input type="text" id="ticket-subject" required placeholder="Betreff" class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs font-semibold">
             <textarea id="ticket-message" rows="2" required placeholder="Beschreibung..." class="w-full p-2.5 border rounded-xl bg-slate-50 text-xs"></textarea>
             <button type="submit" class="w-full py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1"><i data-lucide="send" class="w-3.5 h-3.5"></i> Ticket senden</button>
@@ -578,7 +454,7 @@
             <span class="text-xs font-black bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">94% Pünktlich</span>
           </div>
           <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-            <div class="bg-emerald-500 h-3 rounded-full" style="width: 94%"></div>
+            <div class="bg-emerald-500 h-3 w-[94%] rounded-full"></div>
           </div>
         </section>
 
@@ -593,74 +469,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <input type="text" id="add-worker-name" placeholder="Name" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
               <input type="email" id="add-worker-email" placeholder="E-Mail" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
-              <input type="text" id="add-worker-pin" placeholder="PIN (z.B. 1234)" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
+              <input type="password" id="add-worker-pin" inputmode="numeric" minlength="8" maxlength="12" autocomplete="new-password" placeholder="PIN (8–12 Ziffern)" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
             </div>
-            <button onclick="addWorkerToCompany()" class="w-full py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">+ Mitarbeiter hinzufügen</button>
-          </div>
-        </section>
-
-
-        <!-- FAHRZEUG- & GPS-VERWALTUNG (NUR CHEF) -->
-        <section class="bg-white rounded-2xl p-5 shadow-lg border border-slate-100">
-          <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="car" class="w-4 h-4 text-red-600"></i> Fahrzeuge, GPS & Barcode-Pools
-            </h3>
-            <span class="text-[11px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">Nur Chef-Steuerung</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-            <div class="flex items-center justify-between gap-2">
-              <div>
-                <div class="text-xs font-bold text-slate-800">GPS-Ortung global aktiv</div>
-                <div class="text-[11px] text-slate-500">Nur der Chef kann GPS ein-/ausschalten oder entfernen</div>
-              </div>
-              <input type="checkbox" id="chef-gps-global-toggle" onchange="updateCompanyGpsSetting(this.checked)" class="w-4 h-4 accent-red-600 rounded cursor-pointer">
-            </div>
-            <div class="flex items-center justify-end">
-              <button type="button" onclick="removeAllCompanyGpsData()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-lg border border-red-200 transition flex items-center gap-1">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Alle GPS-Daten löschen
-              </button>
-            </div>
-          </div>
-
-          <div id="dash-vehicle-list" class="space-y-2 text-xs mb-4"></div>
-
-          <div class="pt-3 border-t space-y-2">
-            <h4 class="text-xs font-bold text-slate-700">Fahrzeug anlegen (Festwagen oder Springer / Pool)</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input type="text" id="add-veh-name" placeholder="Fahrzeug (z.B. Sprinter Weiß / VW Golf)" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
-              <input type="text" id="add-veh-plate" placeholder="Kennzeichen (z.B. B-ET 204)" class="p-2.5 border rounded-xl bg-slate-50 text-xs uppercase">
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <select id="add-veh-category" onchange="toggleChefVehicleFormFields()" class="p-2.5 border rounded-xl bg-slate-50 text-xs font-semibold">
-                <option value="fixed">Kategorie 1: Festwagen (mit nach Hause)</option>
-                <option value="pool">Kategorie 2: Springer / Pool (Barcode + KM)</option>
-              </select>
-              <input type="text" id="add-veh-barcode" placeholder="Barcode-Code (z.B. CAR-101)" class="p-2.5 border rounded-xl bg-slate-50 text-xs font-mono uppercase">
-              <input type="number" id="add-veh-km" placeholder="Aktueller KM-Stand" class="p-2.5 border rounded-xl bg-slate-50 text-xs">
-            </div>
-            <div id="chef-fixed-driver-wrap" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <select id="add-veh-assigned-worker" class="p-2.5 border rounded-xl bg-slate-50 text-xs font-semibold">
-                <option value="">Fester Fahrer wählen (optional)...</option>
-              </select>
-              <label class="flex items-center gap-2 p-2.5 bg-slate-50 border rounded-xl text-xs font-semibold text-slate-700 cursor-pointer">
-                <input type="checkbox" id="add-veh-gps-enabled" checked class="w-4 h-4 accent-red-600 rounded">
-                GPS für diesen Festwagen aktiv
-              </label>
-            </div>
-            <button type="button" onclick="addVehicleToCompany()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">+ Fahrzeug speichern</button>
-          </div>
-
-          <!-- FAHRZEUG-LOGBUCH LETZTE 7 TAGE -->
-          <div class="mt-5 pt-4 border-t">
-            <div class="flex justify-between items-center mb-2">
-              <h4 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <i data-lucide="history" class="w-3.5 h-3.5 text-red-600"></i> Fahrtenbuch der letzten 7 Tage (Wer fuhr wann & wie viele KM?)
-              </h4>
-              <span class="text-[10px] font-bold text-slate-400 uppercase">7-Tage-Ansicht</span>
-            </div>
-            <div id="dash-vehicle-trips-7d" class="space-y-2 text-xs"></div>
+            <button data-action="add-worker" class="w-full py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">+ Mitarbeiter hinzufügen</button>
           </div>
         </section>
 
@@ -684,8 +495,8 @@
             <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> Erfasste Stunden, Pausen & GPS
           </h3>
           <div class="flex gap-2">
-            <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-lg flex items-center gap-1"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Drucken</button>
-            <button onclick="exportCompanyCSV()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-lg flex items-center gap-1"><i data-lucide="download" class="w-3.5 h-3.5"></i> CSV</button>
+            <button data-action="print" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-lg flex items-center gap-1"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Drucken</button>
+            <button data-action="export-csv" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-lg flex items-center gap-1"><i data-lucide="download" class="w-3.5 h-3.5"></i> CSV</button>
           </div>
         </div>
 
@@ -695,840 +506,6 @@
     </main>
   </div>
 
-  <!-- SCRIPT LOGIK -->
-  <script>
-    let companies = JSON.parse(localStorage.getItem('et_companies')) || [];
-    let currentSession = JSON.parse(localStorage.getItem('et_session')) || null;
-    let timerInterval = null;
-    let clockInTime = null;
-    let pauseStartTime = null;
-    let totalPauseMs = 0;
-    let isPaused = false;
-    let oneMinAlertSent = false;
-    let currentGpsLocation = null;
-    let activePoolTrip = null; // { vehicleId, barcode, name, plate, kmStart, startedAt }
-    let html5QrScanner = null;
-
-    function saveCompanies() {
-      localStorage.setItem('et_companies', JSON.stringify(companies));
-    }
-
-    function ensureCompanyFleetStructure(comp) {
-      if (typeof comp.gpsEnabled !== 'boolean') comp.gpsEnabled = true;
-      if (!Array.isArray(comp.vehicles)) {
-        comp.vehicles = [
-          {
-            id: 'veh-fixed-1',
-            name: 'Dienstwagen Sprinter (Fest)',
-            plate: 'B-ET 101',
-            category: 'fixed',
-            barcode: '',
-            currentKm: 42150,
-            assignedWorkerEmail: '',
-            gpsEnabled: true
-          },
-          {
-            id: 'veh-pool-1',
-            name: 'Springer Golf Kombi (Pool)',
-            plate: 'B-ET 202',
-            category: 'pool',
-            barcode: 'CAR-202',
-            currentKm: 68400,
-            assignedWorkerEmail: '',
-            gpsEnabled: true
-          }
-        ];
-      }
-      if (!Array.isArray(comp.vehicleTrips)) comp.vehicleTrips = [];
-      return comp;
-    }
-
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-    // Entspannter sanfter Ton via Web Audio API (kein greller Alarm)
-    function playRelaxedChime() {
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        const notes = [392.00, 493.88, 587.33]; // G4 - B4 - D5 (sanfter G-Dur Dreiklang)
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.28);
-
-          const startT = ctx.currentTime + idx * 0.28;
-          gain.gain.setValueAtTime(0.0001, startT);
-          gain.gain.exponentialRampToValueAtTime(0.08, startT + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, startT + 0.75);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(startT);
-          osc.stop(startT + 0.8);
-        });
-      } catch (e) {
-        console.log('Audio Hinweis:', e);
-      }
-    }
-
-    function previewRelaxedTone() {
-      playRelaxedChime();
-      triggerPauseOneMinNotification(true);
-    }
-
-    function requestMobileNotificationPermission() {
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission().catch(() => {});
-      }
-    }
-
-    function triggerPauseOneMinNotification(isPreview = false) {
-      const banner = document.getElementById('pause-warning-banner');
-      if (banner) {
-        banner.classList.remove('hidden');
-        banner.firstElementChild.innerText = isPreview
-          ? '🔔 Vorschau: Deine Pause endet in 1 Minute (entspannter Ton).'
-          : '🔔 Deine Pause endet in 1 Minute!';
-      }
-      playRelaxedChime();
-
-      if (navigator.vibrate) {
-        navigator.vibrate([120, 80, 120]);
-      }
-
-      if ('Notification' in window && Notification.permission === 'granted') {
-        try {
-          new Notification('EinsatzTakt – Pause endet bald', {
-            body: 'Deine Pause endet in 1 Minute.',
-            silent: false
-          });
-        } catch (e) {}
-      }
-    }
-
-    function updatePauseTargetSelection() {
-      requestMobileNotificationPermission();
-    }
-
-    function handleNewsletterSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('newsletter-btn');
-      btn.disabled = true; btn.innerText = "Sende...";
-      fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } })
-        .then(res => {
-          btn.disabled = false; btn.innerText = "Abonnieren";
-          if (res.ok) { document.getElementById('newsletter-success').classList.remove('hidden'); e.target.reset(); }
-        });
-    }
-
-    function handleCompanyRegistration(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('reg-submit-btn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Erstelle Firma...`;
-      lucide.createIcons();
-
-      const name = document.getElementById('reg-company-name').value.trim();
-      const branch = document.getElementById('reg-company-branch').value;
-      const street = document.getElementById('reg-street').value.trim();
-      const city = document.getElementById('reg-city').value.trim();
-      const phone = document.getElementById('reg-phone').value.trim();
-      const chefName = document.getElementById('reg-chef-name').value.trim();
-      const email = document.getElementById('reg-chef-email').value.trim();
-      const pass = document.getElementById('reg-chef-password').value.trim();
-
-      const newCode = "ET-" + Math.floor(1000 + Math.random() * 9000);
-
-      const newCompany = ensureCompanyFleetStructure({
-        code: newCode,
-        name, branch, street, city, phone,
-        chefName, chefEmail: email, chefPass: pass,
-        gpsEnabled: true,
-        workers: [],
-        projects: [{ id: Date.now(), name: "Hauptprojekt / Allgemein", budget: 10000 }],
-        logs: [],
-        tickets: [],
-        vehicleTrips: []
-      });
-
-      companies.push(newCompany);
-      saveCompanies();
-
-      emailjs.send("service_jw30gf1", "template_einsatztakt", {
-        to_name: chefName,
-        to_email: email,
-        company_name: name,
-        company_code: newCode,
-        company_address: `${street}, ${city}`,
-        company_phone: phone
-      }).catch(err => console.log("EmailJS Hinweis", err));
-
-      currentSession = { companyCode: newCode, userEmail: email, role: 'chef' };
-      localStorage.setItem('et_session', JSON.stringify(currentSession));
-
-      document.getElementById('success-company-code').innerText = newCode;
-      closeModal('modal-register-company');
-      openModal('modal-reg-success');
-
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `Firma kostenfrei anlegen & Code per E-Mail erhalten`;
-    }
-
-    function copyCompanyCode() {
-      navigator.clipboard.writeText(document.getElementById('success-company-code').innerText);
-      alert("Firmen-Code kopiert!");
-    }
-
-    function handleChefLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-chef-email').value.trim();
-      const pass = document.getElementById('login-chef-pin').value.trim();
-      const comp = companies.find(c => c.chefEmail.toLowerCase() === email.toLowerCase() && c.chefPass === pass);
-
-      if (comp) {
-        ensureCompanyFleetStructure(comp);
-        saveCompanies();
-        currentSession = { companyCode: comp.code, userEmail: email, role: 'chef' };
-        localStorage.setItem('et_session', JSON.stringify(currentSession));
-        closeModal('modal-chef-login');
-        renderDashboard();
-      } else {
-        alert("Ungültige E-Mail oder Passwort!");
-      }
-    }
-
-    function handleMitarbeiterLogin(e) {
-      e.preventDefault();
-      const code = document.getElementById('login-firmencode').value.trim().toUpperCase();
-      const email = document.getElementById('login-worker-email').value.trim();
-      const pin = document.getElementById('login-worker-pin').value.trim();
-
-      const comp = companies.find(c => c.code === code);
-      if (!comp) return alert("Firmen-Code nicht gefunden!");
-
-      const worker = comp.workers.find(w => w.email.toLowerCase() === email.toLowerCase() && w.pin === pin);
-      if (!worker) return alert("Falsche Mitarbeiter-Daten!");
-
-      ensureCompanyFleetStructure(comp);
-      saveCompanies();
-      currentSession = { companyCode: comp.code, userEmail: email, role: 'mitarbeiter', userName: worker.name };
-      localStorage.setItem('et_session', JSON.stringify(currentSession));
-      closeModal('modal-mitarbeiter-login');
-      renderDashboard();
-    }
-
-    function handleContactSubmit(e) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = document.getElementById('contact-submit-btn');
-      btn.disabled = true;
-      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
-        .then(res => {
-          btn.disabled = false;
-          if (res.ok) { document.getElementById('contact-success-msg').classList.remove('hidden'); form.reset(); }
-        });
-    }
-
-    function renderDashboard() {
-      if (!currentSession) return;
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp) return logoutApp();
-
-      ensureCompanyFleetStructure(comp);
-      saveCompanies();
-
-      document.getElementById('app-dashboard').classList.remove('hidden');
-      document.getElementById('dash-company-name').innerText = comp.name;
-      document.getElementById('dash-firmcode-badge').innerText = `Code: ${comp.code}`;
-
-      const workerView = document.getElementById('dash-mitarbeiter-view');
-      const chefView = document.getElementById('dash-chef-view');
-      const badge = document.getElementById('dash-user-badge');
-
-      if (currentSession.role === 'chef') {
-        badge.innerText = "Inhaber";
-        chefView.classList.remove('hidden');
-        workerView.classList.add('hidden');
-        renderChefView(comp);
-      } else {
-        badge.innerText = `Mitarbeiter: ${currentSession.userName}`;
-        chefView.classList.add('hidden');
-        workerView.classList.remove('hidden');
-        document.getElementById('dash-project-select').innerHTML = comp.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-        populateWorkerVehicleOptions(comp);
-      }
-      renderCompanyLogs(comp);
-      lucide.createIcons();
-    }
-
-    // CHEF FAHRZEUG- & GPS-VERWALTUNG
-    function toggleChefVehicleFormFields() {
-      const cat = document.getElementById('add-veh-category').value;
-      const fixedWrap = document.getElementById('chef-fixed-driver-wrap');
-      const barcodeInput = document.getElementById('add-veh-barcode');
-      if (cat === 'fixed') {
-        fixedWrap.classList.remove('hidden');
-        barcodeInput.placeholder = 'Optionaler Barcode (z.B. FIX-01)';
-      } else {
-        fixedWrap.classList.add('hidden');
-        barcodeInput.placeholder = 'Barcode-Code Pflicht (z.B. CAR-101)';
-      }
-    }
-
-    function updateCompanyGpsSetting(enabled) {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp || currentSession.role !== 'chef') return;
-      comp.gpsEnabled = !!enabled;
-      saveCompanies();
-      renderChefView(comp);
-    }
-
-    function toggleSingleVehicleGps(vehicleId) {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp || currentSession.role !== 'chef') return;
-      const v = comp.vehicles.find(item => item.id === vehicleId);
-      if (!v) return;
-      v.gpsEnabled = !v.gpsEnabled;
-      saveCompanies();
-      renderChefView(comp);
-    }
-
-    function removeAllCompanyGpsData() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp || currentSession.role !== 'chef') return;
-      if (!confirm('Alle gespeicherten GPS-Koordinaten aus den Protokollen löschen und GPS deaktivieren?')) return;
-      comp.gpsEnabled = false;
-      comp.vehicles.forEach(v => v.gpsEnabled = false);
-      comp.logs.forEach(l => { l.gps = null; });
-      saveCompanies();
-      renderChefView(comp);
-      renderCompanyLogs(comp);
-    }
-
-    function deleteVehicle(vehicleId) {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp || currentSession.role !== 'chef') return;
-      comp.vehicles = comp.vehicles.filter(v => v.id !== vehicleId);
-      saveCompanies();
-      renderChefView(comp);
-    }
-
-    function addVehicleToCompany() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if (!comp || currentSession.role !== 'chef') return;
-
-      const name = document.getElementById('add-veh-name').value.trim();
-      const plate = document.getElementById('add-veh-plate').value.trim().toUpperCase();
-      const category = document.getElementById('add-veh-category').value;
-      const barcode = document.getElementById('add-veh-barcode').value.trim().toUpperCase();
-      const km = parseInt(document.getElementById('add-veh-km').value, 10) || 0;
-      const assignedWorkerEmail = category === 'fixed' ? document.getElementById('add-veh-assigned-worker').value : '';
-      const gpsEnabled = category === 'fixed' ? document.getElementById('add-veh-gps-enabled').checked : comp.gpsEnabled;
-
-      if (!name || !plate) return alert('Bitte Fahrzeugname und Kennzeichen angeben.');
-      if (category === 'pool' && !barcode) return alert('Für Springer / Pool-Fahrzeuge bitte einen Barcode-Code angeben.');
-
-      comp.vehicles.push({
-        id: 'veh-' + Date.now(),
-        name,
-        plate,
-        category,
-        barcode,
-        currentKm: km,
-        assignedWorkerEmail,
-        gpsEnabled: comp.gpsEnabled ? gpsEnabled : false
-      });
-
-      saveCompanies();
-      document.getElementById('add-veh-name').value = '';
-      document.getElementById('add-veh-plate').value = '';
-      document.getElementById('add-veh-barcode').value = '';
-      document.getElementById('add-veh-km').value = '';
-      renderChefView(comp);
-    }
-
-    function renderChefView(comp) {
-      const gpsToggle = document.getElementById('chef-gps-global-toggle');
-      if (gpsToggle) gpsToggle.checked = !!comp.gpsEnabled;
-
-      const workerSelect = document.getElementById('add-veh-assigned-worker');
-      if (workerSelect) {
-        workerSelect.innerHTML = `<option value="">Fester Fahrer wählen (optional)...</option>` +
-          comp.workers.map(w => `<option value="${w.email}">${w.name} (${w.email})</option>`).join('');
-      }
-
-      document.getElementById('dash-worker-list').innerHTML = comp.workers.length ? comp.workers.map(w => `
-        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-          <div><div class="font-bold text-slate-800">${w.name}</div><div class="text-slate-500">${w.email}</div></div>
-          <span class="font-mono bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">PIN: ${w.pin}</span>
-        </div>
-      `).join('') : '<div class="text-slate-400">Keine Mitarbeiter vorhanden.</div>';
-
-      document.getElementById('dash-vehicle-list').innerHTML = comp.vehicles.length ? comp.vehicles.map(v => {
-        const isFixed = v.category === 'fixed';
-        const assignedWorker = comp.workers.find(w => w.email === v.assignedWorkerEmail);
-        return `
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-2">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="font-bold text-slate-800">${v.name}</span>
-                <span class="font-mono text-[11px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded">${v.plate}</span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isFixed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                  ${isFixed ? 'Festwagen (mit nach Hause)' : 'Springer / Barcode-Pool'}
-                </span>
-              </div>
-              <div class="text-[11px] text-slate-500 mt-1">
-                KM-Stand: <strong>${Number(v.currentKm || 0).toLocaleString('de-DE')} km</strong>
-                ${!isFixed && v.barcode ? ` • Barcode: <strong class="font-mono text-slate-700">${v.barcode}</strong>` : ''}
-                ${isFixed && assignedWorker ? ` • Fahrer: <strong>${assignedWorker.name}</strong>` : ''}
-              </div>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="toggleSingleVehicleGps('${v.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border ${v.gpsEnabled && comp.gpsEnabled ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-200 text-slate-600 border-slate-300'}">
-                GPS: ${v.gpsEnabled && comp.gpsEnabled ? 'AN' : 'AUS'}
-              </button>
-              <button type="button" onclick="deleteVehicle('${v.id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg" title="Fahrzeug entfernen">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('') : '<div class="text-slate-400">Keine Fahrzeuge angelegt.</div>';
-
-      // 7-Tage Fahrtenbuch filtern & rendern
-      const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-      const recentTrips = (comp.vehicleTrips || []).filter(t => (t.timestamp || 0) >= sevenDaysAgo);
-
-      document.getElementById('dash-vehicle-trips-7d').innerHTML = recentTrips.length ? recentTrips.map(t => `
-        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-2">
-          <div>
-            <div class="font-bold text-slate-800">${t.driver} <span class="text-slate-400 font-normal">fuhr</span> ${t.vehicleName} (${t.plate})</div>
-            <div class="text-[11px] text-slate-500">
-              ${t.dateStr} • Barcode: <span class="font-mono">${t.barcode || 'Festwagen'}</span> • Start: ${t.kmStart} km → Ende: ${t.kmEnd} km
-            </div>
-          </div>
-          <div class="font-mono font-bold text-xs bg-red-50 text-red-700 px-2.5 py-1 rounded-lg border border-red-100">
-            +${t.kmDriven} km
-          </div>
-        </div>
-      `).join('') : '<div class="text-slate-400">Keine Fahrten in den letzten 7 Tagen erfasst.</div>';
-
-      document.getElementById('dash-tickets-list').innerHTML = (comp.tickets && comp.tickets.length) ? comp.tickets.map(t => `
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-          <div class="flex justify-between font-bold text-slate-800"><span>${t.subject}</span><span class="text-[10px] text-slate-400">${t.date}</span></div>
-          <p class="text-slate-600 text-xs mt-1">${t.message}</p>
-          <div class="text-[10px] text-red-600 font-bold mt-1">Von: ${t.worker}</div>
-        </div>
-      `).join('') : '<div class="text-slate-400">Keine Support-Tickets.</div>';
-      lucide.createIcons();
-    }
-
-    // MITARBEITER FAHRZEUG & BARCODE-SCANNER
-    function populateWorkerVehicleOptions(comp) {
-      const fixedSelect = document.getElementById('worker-fixed-car-select');
-      const fixedCars = comp.vehicles.filter(v => v.category === 'fixed');
-      if (fixedSelect) {
-        fixedSelect.innerHTML = fixedCars.length
-          ? fixedCars.map(v => `<option value="${v.id}">${v.name} (${v.plate}) – mit nach Hause</option>`).join('')
-          : `<option value="">Kein Festwagen hinterlegt</option>`;
-      }
-      onWorkerVehicleModeChange();
-    }
-
-    function onWorkerVehicleModeChange() {
-      const mode = document.getElementById('worker-vehicle-mode').value;
-      const fixedBox = document.getElementById('worker-fixed-car-box');
-      const poolBox = document.getElementById('worker-pool-car-box');
-      if (mode === 'fixed') {
-        fixedBox.classList.remove('hidden');
-        poolBox.classList.add('hidden');
-        stopBarcodeCameraScanner();
-      } else if (mode === 'pool') {
-        fixedBox.classList.add('hidden');
-        poolBox.classList.remove('hidden');
-      } else {
-        fixedBox.classList.add('hidden');
-        poolBox.classList.add('hidden');
-        stopBarcodeCameraScanner();
-      }
-    }
-
-    function toggleBarcodeCameraScanner() {
-      if (html5QrScanner) {
-        stopBarcodeCameraScanner();
-      } else {
-        startBarcodeCameraScanner();
-      }
-    }
-
-    function startBarcodeCameraScanner() {
-      const container = document.getElementById('barcode-reader-container');
-      container.classList.remove('hidden');
-      document.getElementById('scan-btn-label').innerText = 'Stopp';
-
-      if (window.Html5Qrcode) {
-        html5QrScanner = new Html5Qrcode('qr-reader');
-        html5QrScanner.start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 220, height: 140 } },
-          (decodedText) => {
-            document.getElementById('worker-scanned-barcode').value = decodedText.trim().toUpperCase();
-            playRelaxedChime();
-            stopBarcodeCameraScanner();
-          },
-          () => {}
-        ).catch(() => {
-          alert('Kamera konnte nicht gestartet werden. Bitte Barcode-Code manuell eingeben.');
-          stopBarcodeCameraScanner();
-        });
-      } else {
-        alert('Kamera-Scanner nicht verfügbar. Bitte Barcode-Code manuell eintippen.');
-        stopBarcodeCameraScanner();
-      }
-    }
-
-    function stopBarcodeCameraScanner() {
-      const container = document.getElementById('barcode-reader-container');
-      const label = document.getElementById('scan-btn-label');
-      if (label) label.innerText = 'Kamera';
-      if (container) container.classList.add('hidden');
-
-      if (html5QrScanner) {
-        html5QrScanner.stop().then(() => {
-          html5QrScanner.clear();
-          html5QrScanner = null;
-        }).catch(() => {
-          html5QrScanner = null;
-        });
-      }
-    }
-
-    function confirmPoolVehicleStart() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      const codeInput = document.getElementById('worker-scanned-barcode').value.trim().toUpperCase();
-      const kmStartVal = parseInt(document.getElementById('worker-km-start').value, 10);
-
-      if (!codeInput) return alert('Bitte zuerst den Fahrzeug-Barcode scannen oder eingeben.');
-      if (isNaN(kmStartVal) || kmStartVal < 0) return alert('Bitte einen gültigen Kilometerstand bei Dienstbeginn eingeben.');
-
-      const matchedVehicle = comp.vehicles.find(v => v.category === 'pool' && v.barcode.toUpperCase() === codeInput);
-      const vehicleObj = matchedVehicle || {
-        id: 'pool-' + Date.now(),
-        name: `Springer-Wagen (${codeInput})`,
-        plate: codeInput,
-        category: 'pool',
-        barcode: codeInput,
-        currentKm: kmStartVal
-      };
-
-      activePoolTrip = {
-        vehicleId: vehicleObj.id,
-        name: vehicleObj.name,
-        plate: vehicleObj.plate,
-        barcode: codeInput,
-        kmStart: kmStartVal,
-        startedAt: Date.now()
-      };
-
-      document.getElementById('active-pool-trip-badge').classList.remove('hidden');
-      document.getElementById('pool-km-start-row').classList.add('hidden');
-      document.getElementById('pool-km-end-row').classList.remove('hidden');
-      document.getElementById('pool-active-vehicle-info').innerText =
-        `Übernommen: ${vehicleObj.name} (${vehicleObj.plate}) • Start-KM: ${kmStartVal}`;
-    }
-
-    function addWorkerToCompany() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      const name = document.getElementById('add-worker-name').value.trim();
-      const email = document.getElementById('add-worker-email').value.trim();
-      const pin = document.getElementById('add-worker-pin').value.trim();
-      if(!name || !email || !pin) return alert("Alle Felder ausfüllen!");
-      comp.workers.push({ name, email, pin });
-      saveCompanies();
-      document.getElementById('add-worker-name').value = '';
-      document.getElementById('add-worker-email').value = '';
-      document.getElementById('add-worker-pin').value = '';
-      renderChefView(comp);
-    }
-
-    function submitWorkerTicket(e) {
-      e.preventDefault();
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      if(!comp.tickets) comp.tickets = [];
-      comp.tickets.unshift({
-        worker: currentSession.userName,
-        subject: document.getElementById('ticket-subject').value.trim(),
-        message: document.getElementById('ticket-message').value.trim(),
-        date: new Date().toLocaleDateString('de-DE')
-      });
-      saveCompanies();
-      alert("Ticket an Chef gesendet!");
-      e.target.reset();
-    }
-
-    function formatMmSs(ms) {
-      const totalSec = Math.max(0, Math.floor(ms / 1000));
-      const mins = Math.floor(totalSec / 60);
-      const secs = totalSec % 60;
-      return `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-    }
-
-    function shouldCollectGpsForCurrentContext(comp) {
-      if (!comp || comp.gpsEnabled === false) return false;
-      const mode = document.getElementById('worker-vehicle-mode')?.value || 'fixed';
-      if (mode === 'fixed') {
-        const fixedId = document.getElementById('worker-fixed-car-select')?.value;
-        const v = comp.vehicles.find(item => item.id === fixedId);
-        if (v && v.gpsEnabled === false) return false;
-      }
-      return true;
-    }
-
-    // STEMPELUHR MIT LIVE-PAUSE, 1-MIN-TON-HINWEIS, GPS & FAHRZEUG
-    function clockIn() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      const mode = document.getElementById('worker-vehicle-mode').value;
-
-      if (mode === 'pool' && !activePoolTrip) {
-        const codeInput = document.getElementById('worker-scanned-barcode').value.trim().toUpperCase();
-        const kmStartVal = parseInt(document.getElementById('worker-km-start').value, 10);
-        if (!codeInput || isNaN(kmStartVal)) {
-          return alert('Für Springer / Pool-Fahrzeuge bitte zuerst Barcode scannen/eingeben, Start-Kilometerstand eintragen und "Fahrzeug übernehmen & losfahren" klicken.');
-        }
-        confirmPoolVehicleStart();
-      }
-
-      requestMobileNotificationPermission();
-      clockInTime = new Date();
-      totalPauseMs = 0;
-      pauseStartTime = null;
-      isPaused = false;
-      oneMinAlertSent = false;
-      currentGpsLocation = null;
-
-      document.getElementById('live-pause-timer').innerText = '00:00';
-      document.getElementById('total-pause-timer').innerText = '0 Min.';
-      document.getElementById('pause-warning-banner').classList.add('hidden');
-      document.getElementById('dash-timer-status').innerText = 'Zeiterfassung läuft...';
-
-      if (shouldCollectGpsForCurrentContext(comp) && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            currentGpsLocation = {
-              lat: position.coords.latitude.toFixed(5),
-              lng: position.coords.longitude.toFixed(5)
-            };
-            document.getElementById('gps-status-indicator').classList.remove('hidden');
-          },
-          (error) => { console.log("GPS Hinweis", error); }
-        );
-      } else {
-        document.getElementById('gps-status-indicator').classList.add('hidden');
-      }
-
-      document.getElementById('btn-clock-in').disabled = true;
-      document.getElementById('btn-pause').disabled = false;
-      document.getElementById('btn-pause').classList.remove('opacity-50', 'cursor-not-allowed');
-      document.getElementById('btn-clock-out').disabled = false;
-      document.getElementById('btn-clock-out').classList.remove('opacity-50', 'cursor-not-allowed');
-
-      timerInterval = setInterval(() => {
-        const now = new Date();
-        const currentPauseSegmentMs = (isPaused && pauseStartTime) ? (now - pauseStartTime) : 0;
-        const combinedPauseMs = totalPauseMs + currentPauseSegmentMs;
-
-        document.getElementById('total-pause-timer').innerText = `${Math.floor(combinedPauseMs / 60000)} Min.`;
-
-        if (!isPaused) {
-          const netWorkMs = Math.max(0, (now - clockInTime) - combinedPauseMs);
-          document.getElementById('dash-timer').innerText =
-            `${String(Math.floor(netWorkMs/3600000)).padStart(2,'0')}:${String(Math.floor((netWorkMs%3600000)/60000)).padStart(2,'0')}:${String(Math.floor((netWorkMs%60000)/1000)).padStart(2,'0')}`;
-        } else {
-          document.getElementById('live-pause-timer').innerText = formatMmSs(currentPauseSegmentMs);
-          const targetMins = parseInt(document.getElementById('pause-target-minutes').value, 10) || 30;
-          const remainingMs = (targetMins * 60000) - currentPauseSegmentMs;
-
-          if (remainingMs <= 60000 && !oneMinAlertSent) {
-            oneMinAlertSent = true;
-            triggerPauseOneMinNotification(false);
-          }
-        }
-      }, 1000);
-    }
-
-    function togglePause() {
-      const btnText = document.getElementById('btn-pause-text');
-      const pauseBtn = document.getElementById('btn-pause');
-
-      if (!isPaused) {
-        requestMobileNotificationPermission();
-        isPaused = true;
-        oneMinAlertSent = false;
-        pauseStartTime = new Date();
-        document.getElementById('pause-warning-banner').classList.add('hidden');
-        btnText.innerText = "Pause beenden";
-        pauseBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
-        pauseBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
-        document.getElementById('dash-timer-status').innerText = "⏸ PAUSE LÄUFT";
-      } else {
-        isPaused = false;
-        if (pauseStartTime) {
-          totalPauseMs += (new Date() - pauseStartTime);
-          pauseStartTime = null;
-        }
-        document.getElementById('live-pause-timer').innerText = '00:00';
-        document.getElementById('total-pause-timer').innerText = `${Math.round(totalPauseMs / 60000)} Min.`;
-        document.getElementById('pause-warning-banner').classList.add('hidden');
-        btnText.innerText = "Pause starten";
-        pauseBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
-        pauseBtn.classList.add('bg-amber-500', 'hover:bg-amber-600');
-        document.getElementById('dash-timer-status').innerText = "Zeiterfassung läuft...";
-      }
-    }
-
-    function clockOut() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      const mode = document.getElementById('worker-vehicle-mode').value;
-      let vehicleSummary = 'Kein Firmenwagen';
-
-      if (mode === 'pool' && activePoolTrip) {
-        const kmEndVal = parseInt(document.getElementById('worker-km-end').value, 10);
-        if (isNaN(kmEndVal) || kmEndVal < activePoolTrip.kmStart) {
-          return alert(`Bitte gültigen End-Kilometerstand eingeben (mindestens Start-KM ${activePoolTrip.kmStart}).`);
-        }
-        const kmDriven = kmEndVal - activePoolTrip.kmStart;
-        const nowTs = Date.now();
-
-        comp.vehicleTrips.unshift({
-          id: 'trip-' + nowTs,
-          timestamp: nowTs,
-          dateStr: new Date(nowTs).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          driver: currentSession.userName,
-          vehicleId: activePoolTrip.vehicleId,
-          vehicleName: activePoolTrip.name,
-          plate: activePoolTrip.plate,
-          barcode: activePoolTrip.barcode,
-          kmStart: activePoolTrip.kmStart,
-          kmEnd: kmEndVal,
-          kmDriven
-        });
-
-        const fleetVeh = comp.vehicles.find(v => v.id === activePoolTrip.vehicleId);
-        if (fleetVeh) fleetVeh.currentKm = kmEndVal;
-
-        vehicleSummary = `${activePoolTrip.name} (${activePoolTrip.kmStart} → ${kmEndVal} km, +${kmDriven} km)`;
-        activePoolTrip = null;
-        document.getElementById('worker-scanned-barcode').value = '';
-        document.getElementById('worker-km-start').value = '';
-        document.getElementById('worker-km-end').value = '';
-        document.getElementById('active-pool-trip-badge').classList.add('hidden');
-        document.getElementById('pool-km-start-row').classList.remove('hidden');
-        document.getElementById('pool-km-end-row').classList.add('hidden');
-      } else if (mode === 'fixed') {
-        const fixedId = document.getElementById('worker-fixed-car-select').value;
-        const v = comp.vehicles.find(item => item.id === fixedId);
-        if (v) {
-          vehicleSummary = `Festwagen: ${v.name} (${v.plate})`;
-          const nowTs = Date.now();
-          comp.vehicleTrips.unshift({
-            id: 'trip-' + nowTs,
-            timestamp: nowTs,
-            dateStr: new Date(nowTs).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-            driver: currentSession.userName,
-            vehicleId: v.id,
-            vehicleName: v.name,
-            plate: v.plate,
-            barcode: 'FESTWAGEN',
-            kmStart: v.currentKm || 0,
-            kmEnd: v.currentKm || 0,
-            kmDriven: 0
-          });
-        }
-      }
-
-      if (isPaused) togglePause();
-      clearInterval(timerInterval);
-
-      const netWorkMs = Math.max(0, (new Date() - clockInTime) - totalPauseMs);
-      const hours = (netWorkMs / 3600000).toFixed(2);
-      const pauseMinutes = Math.round(totalPauseMs / 60000);
-
-      const proj = comp.projects.find(p => p.id == document.getElementById('dash-project-select').value);
-
-      comp.logs.unshift({
-        worker: currentSession.userName,
-        project: proj ? proj.name : "Allgemein",
-        hours: parseFloat(hours),
-        pauseMins: pauseMinutes,
-        vehicleInfo: vehicleSummary,
-        date: new Date().toLocaleDateString('de-DE'),
-        gps: currentGpsLocation
-      });
-
-      saveCompanies();
-      document.getElementById('dash-timer').innerText = "00:00:00";
-      document.getElementById('live-pause-timer').innerText = "00:00";
-      document.getElementById('dash-timer-status').innerText = "Gespeichert!";
-      document.getElementById('gps-status-indicator').classList.add('hidden');
-      document.getElementById('pause-warning-banner').classList.add('hidden');
-
-      document.getElementById('btn-clock-in').disabled = false;
-      document.getElementById('btn-pause').disabled = true;
-      document.getElementById('btn-pause').classList.add('opacity-50', 'cursor-not-allowed');
-      document.getElementById('btn-clock-out').disabled = true;
-      document.getElementById('btn-clock-out').classList.add('opacity-50', 'cursor-not-allowed');
-
-      renderCompanyLogs(comp);
-    }
-
-    function renderCompanyLogs(comp) {
-      const filtered = (currentSession.role === 'mitarbeiter') ? comp.logs.filter(l => l.worker === currentSession.userName) : comp.logs;
-      document.getElementById('print-company-info').innerText = `Firma: ${comp.name} | ${comp.street}, ${comp.city} | Code: ${comp.code}`;
-      document.getElementById('dash-logs-list').innerHTML = filtered.length ? filtered.map(l => `
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center gap-2">
-          <div>
-            <div class="font-bold text-slate-800">${l.project}</div>
-            <div class="text-slate-500">${l.worker} • ${l.date} ${l.pauseMins ? `• Pause: ${l.pauseMins} Min.` : ''}</div>
-            ${l.vehicleInfo ? `<div class="text-[11px] text-slate-600 font-medium mt-0.5">🚗 ${l.vehicleInfo}</div>` : ''}
-            ${(comp.gpsEnabled !== false && l.gps) ? `
-              <a href="https://www.google.com/maps?q=${l.gps.lat},${l.gps.lng}" target="_blank" class="inline-flex items-center gap-1 text-[11px] text-red-600 hover:underline font-semibold mt-1">
-                <i data-lucide="map-pin" class="w-3 h-3"></i> GPS: ${l.gps.lat}, ${l.gps.lng}
-              </a>
-            ` : ''}
-          </div>
-          <div class="font-mono font-bold text-red-600 text-sm shrink-0">${l.hours} Std.</div>
-        </div>
-      `).join('') : '<div class="text-slate-400 text-center py-4">Keine Arbeitszeiten protokolliert</div>';
-      lucide.createIcons();
-    }
-
-    function exportCompanyCSV() {
-      const comp = companies.find(c => c.code === currentSession.companyCode);
-      let csv = "Datum;Mitarbeiter;Projekt;Stunden;Pause_Minuten;Fahrzeug;GPS_Lat;GPS_Lng\n";
-      comp.logs.forEach(l => {
-        const gpsActive = (comp.gpsEnabled !== false && l.gps);
-        csv += `${l.date};${l.worker};${l.project};${l.hours};${l.pauseMins || 0};${l.vehicleInfo || ''};${gpsActive ? l.gps.lat : ''};${gpsActive ? l.gps.lng : ''}\n`;
-      });
-      const a = document.createElement('a');
-      a.href = window.URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-      a.download = `Zeiten_${comp.code}.csv`; a.click();
-    }
-
-    function logoutApp() {
-      stopBarcodeCameraScanner();
-      clearInterval(timerInterval);
-      currentSession = null;
-      localStorage.removeItem('et_session');
-      document.getElementById('app-dashboard').classList.add('hidden');
-    }
-
-    window.onload = function() {
-      lucide.createIcons();
-      if(currentSession) renderDashboard();
-    };
-  </script>
+  <script defer src="/app.js"></script>
 </body>
 </html>

@@ -1,39 +1,40 @@
 CREATE TABLE IF NOT EXISTS companies (
-    code VARCHAR(10) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    branch VARCHAR(100),
-    street VARCHAR(255),
-    city VARCHAR(100),
-    phone VARCHAR(50),
-    chef_name VARCHAR(255) NOT NULL,
-    chef_email VARCHAR(255) UNIQUE NOT NULL,
-    chef_pass VARCHAR(255) NOT NULL,
+    code TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    branch TEXT,
+    street TEXT,
+    city TEXT,
+    phone TEXT,
+    chef_name TEXT NOT NULL,
+    chef_email TEXT UNIQUE NOT NULL,
+    chef_pass_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS workers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_code VARCHAR(10) REFERENCES companies(code) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    pin VARCHAR(10) NOT NULL,
+    company_code TEXT NOT NULL REFERENCES companies(code) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    pin_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(company_code, email)
 );
 
 CREATE TABLE IF NOT EXISTS projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_code VARCHAR(10) REFERENCES companies(code) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL,
+    company_code TEXT NOT NULL REFERENCES companies(code) ON DELETE CASCADE,
+    name TEXT NOT NULL,
     budget DECIMAL(10,2) DEFAULT 0.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_code VARCHAR(10) REFERENCES companies(code) ON DELETE CASCADE,
-    worker_name VARCHAR(255) NOT NULL,
-    project_name VARCHAR(255) NOT NULL,
+    company_code TEXT NOT NULL REFERENCES companies(code) ON DELETE CASCADE,
+    worker_id INTEGER REFERENCES workers(id),
+    worker_name TEXT NOT NULL,
+    project_name TEXT NOT NULL,
     hours DECIMAL(5,2) NOT NULL,
     pause_mins INT DEFAULT 0,
     log_date DATE NOT NULL,
@@ -44,11 +45,17 @@ CREATE TABLE IF NOT EXISTS logs (
 
 CREATE TABLE IF NOT EXISTS tickets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_code VARCHAR(10) REFERENCES companies(code) ON DELETE CASCADE,
-    worker_name VARCHAR(255) NOT NULL,
+    company_code TEXT NOT NULL REFERENCES companies(code) ON DELETE CASCADE,
+    worker_name TEXT NOT NULL,
     subject VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     ticket_date DATE NOT NULL,
     status VARCHAR(50) DEFAULT 'offen',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+    sid TEXT PRIMARY KEY,
+    sess TEXT NOT NULL,
+    expires_at INTEGER NOT NULL
 );
