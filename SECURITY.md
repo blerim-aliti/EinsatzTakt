@@ -27,3 +27,15 @@ npm start
 ```
 
 `/api/health` sollte `{"status":"ok","service":"EinsatzTakt Backend"}` zurückgeben. Tests laufen mit `npm test`.
+
+## Deployment auf Render
+
+`render.yaml` definiert einen Node-Webservice in Frankfurt mit einem persistenten 1-GB-Datenträger. Ein Datenträger ist bei Render nur mit einem kostenpflichtigen Webservice verfügbar; vor dem Anlegen die aktuellen Preise und den ausgewählten Compute-Plan im Render-Dashboard prüfen. Der Service ist auf den Branch `security/backend-hardening` eingestellt.
+
+1. Änderungen mit `render.yaml` in das GitHub-Repository pushen.
+2. Im Render-Dashboard **New > Blueprint** auswählen, das GitHub-Repository verbinden, den Branch `security/backend-hardening` wählen und die angezeigte Kosten-/Ressourcenübersicht prüfen.
+3. Den Blueprint nur dann bereitstellen, wenn Service, Frankfurt-Region und persistenter Datenträger korrekt angezeigt werden. Render generiert `SESSION_SECRET` automatisch.
+4. Nach erfolgreichem Deploy in den Service-Einstellungen `app.einsatztakt.de` als Custom Domain hinzufügen bzw. verifizieren. Beim DNS-Anbieter den von Render angezeigten CNAME-Zielwert für `app` eintragen. Die bestehende Root-Domain `einsatztakt.de` und deren GitHub-Pages-Konfiguration dabei nicht ändern. Vorhandene `AAAA`-Records für `app` gemäß Render-Anleitung entfernen.
+5. `https://app.einsatztakt.de/api/health` prüfen, anschließend Registrierung, Login, Session-Cookie, Datenbank-Persistenz nach einem Redeploy und Wiederherstellung aus Backup testen.
+
+Render kann das Deployment, die Custom-Domain-Verifizierung und DNS-Änderungen nicht allein durch einen Git-Push abschließen. Dazu sind Zugriff auf das Render-Dashboard und die DNS-Verwaltung erforderlich. Das bestehende GitHub-Pages-Frontend bleibt separat auf der Root-Domain bestehen, bis es bewusst umgestellt wird.
